@@ -29,7 +29,7 @@
 		</plugins>
 	</build>
 	<modules>
-		<module>stsc.common</module>
+<!--		<module>stsc.common</module>
 		<module>stsc.signals</module>
 		<module>stsc.algorithms</module>
 		<module>stsc.storage</module>
@@ -41,7 +41,7 @@
 		<module>stsc.frontend.zozka</module>
 		<module>stsc.news.feedzilla</module>
 		<module>stsc.database</module>
-		<module>stsc.as.service</module>
+		<module>stsc.as.service</module> -->
 	</modules>
 	<description>Stsc is a bunch of classes for automatic trading strategy generating.</description>
 </project>
