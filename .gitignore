@@ -1,17 +1,10 @@
-
-*.class
-
 # Package Files #
 *.jar
 *.war
 *.ear
 
 target
-/.*
 .project
 .settings
 .classpath
-_*.log
-*.versionsBackup
 
-.~lock*#
