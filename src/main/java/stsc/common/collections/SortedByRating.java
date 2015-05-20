@@ -1,72 +1,74 @@
 package stsc.common.collections;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
-public class SortedByRating<T> {
+import com.google.common.collect.Ordering;
+import com.google.common.collect.TreeMultimap;
 
-	private final SortedMap<Double, List<T>> storageByRating;
+/**
+ * Sort <T> by double key (from high to low [ 45, 18, 9 ]). Depending on your
+ * comparator <C> that you will provide to constructor we will delete last
+ * element.
+ */
+public class SortedByRating<T, C extends Comparator<T>> {
 
-	public SortedByRating() {
-		this.storageByRating = new TreeMap<Double, List<T>>();
+	private final TreeMultimap<Double, T> storageByRating;
+
+	public SortedByRating(final C comparatorForValue) {
+		this.storageByRating = TreeMultimap.create(Ordering.natural().reverse(), comparatorForValue);
 	}
 
+	/**
+	 * returns true if element was added
+	 */
 	public boolean addElement(Double rating, T value) {
-		if (storageByRating.containsKey(rating)) {
-			final List<T> ratingSet = storageByRating.get(rating);
-			ratingSet.add(value);
-		} else {
-			final List<T> newValue = new ArrayList<>();
-			newValue.add(value);
-			storageByRating.put(rating, newValue);
-		}
-		return true;
+		return storageByRating.put(rating, value);
 	}
 
+	/**
+	 * returns true if element was deleted
+	 */
 	public boolean removeElement(Double rating, T value) {
-		if (storageByRating.containsKey(rating)) {
-			final List<T> ratingSet = storageByRating.get(rating);
-			final boolean deleted = ratingSet.remove(value);
-			if (deleted && ratingSet.isEmpty()) {
-				storageByRating.remove(rating);
-			}
-			return deleted;
-		}
-		return false;
+		return storageByRating.remove(rating, value);
 	}
 
+	/**
+	 * If there is possible to delete last element we will return it, otherwise
+	 * we will return Optional.empty()
+	 */
 	public Optional<T> deleteLast() {
 		if (storageByRating.isEmpty()) {
 			return Optional.empty();
 		}
-		final List<T> strategies = storageByRating.get(storageByRating.firstKey());
-		final T result = strategies.remove(strategies.size() - 1);
-		if (strategies.isEmpty()) {
-			storageByRating.remove(storageByRating.firstKey());
+		final Double keyToDelete = storageByRating.asMap().lastKey();
+		final T elementToDelete = storageByRating.get(keyToDelete).last();
+
+		if (storageByRating.remove(keyToDelete, elementToDelete)) {
+			return Optional.ofNullable(elementToDelete);
 		}
-		return Optional.ofNullable(result);
+		return Optional.empty();
 	}
 
+	/**
+	 * amount of elements
+	 */
 	public int size() {
-		int sum = 0;
-		for (Map.Entry<Double, List<T>> i : storageByRating.entrySet()) {
-			sum += i.getValue().size();
-		}
-		return sum;
+		return storageByRating.size();
 	}
 
-	public SortedMap<Double, List<T>> getValues() {
-		return storageByRating;
+	public SortedMap<Double, Collection<T>> getValues() {
+		return storageByRating.asMap();
 	}
 
 	public List<T> getValuesAsList() {
 		final List<T> result = new ArrayList<>();
-		for (Entry<Double, List<T>> e : getValues().entrySet()) {
+		for (Entry<Double, Collection<T>> e : getValues().entrySet()) {
 			result.addAll(e.getValue());
 		}
 		return result;
