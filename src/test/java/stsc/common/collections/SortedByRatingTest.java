@@ -8,7 +8,7 @@ import com.google.common.collect.Ordering;
 public class SortedByRatingTest {
 	@Test
 	public void testSortedByRating() {
-		final SortedByRating<Integer, Ordering<Integer>> s = new SortedByRating<>(Ordering.natural());
+		final SortedByRating<Integer> s = new SortedByRating<>(Ordering.natural());
 		s.addElement(14.5, 15);
 		s.addElement(14.5, 16);
 		s.addElement(14.5, 17);

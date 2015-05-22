@@ -16,11 +16,11 @@ import com.google.common.collect.TreeMultimap;
  * comparator <C> that you will provide to constructor we will delete last
  * element.
  */
-public class SortedByRating<T, C extends Comparator<T>> {
+public class SortedByRating<T> {
 
 	private final TreeMultimap<Double, T> storageByRating;
 
-	public SortedByRating(final C comparatorForValue) {
+	public SortedByRating(final Comparator<T> comparatorForValue) {
 		this.storageByRating = TreeMultimap.create(Ordering.natural().reverse(), comparatorForValue);
 	}
 
