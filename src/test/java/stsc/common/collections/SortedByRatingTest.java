@@ -32,4 +32,15 @@ public class SortedByRatingTest {
 		for (int i = 0; i < 20; ++i)
 			s.deleteLast();
 	}
+	
+	@Test
+	public void testSortedWithSort() {
+		final SortedByRating<Integer> s = new SortedByRating<>(Ordering.natural());
+		s.addElement(2.0, 15);
+		s.addElement(4.0, 16);
+		s.addElement(6.0, 17);
+		Assert.assertEquals(15, s.getValuesAsList().get(2).intValue());
+		Assert.assertEquals(15, s.deleteLast().get().intValue());
+		Assert.assertEquals(17, s.getValuesAsList().get(0).intValue());
+	}
 }
