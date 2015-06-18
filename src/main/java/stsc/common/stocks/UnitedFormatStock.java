@@ -212,6 +212,9 @@ public final class UnitedFormatStock extends Stock {
 
 	}
 
+	/*
+	 * ^FTSE -> _094FTSE
+	 */
 	public final static String toFilesystem(String stockName) {
 		final Matcher matcher = Regexps.notSymbolPrefix.matcher(stockName);
 		if (matcher.matches()) {
@@ -224,6 +227,9 @@ public final class UnitedFormatStock extends Stock {
 		return stockName;
 	}
 
+	/*
+	 * _094FTSE -> ^FTSE
+	 */
 	public final static String fromFilesystem(String stockName) {
 		final Matcher matcher = Regexps.stockNamePrefix.matcher(stockName);
 		if (matcher.matches()) {
