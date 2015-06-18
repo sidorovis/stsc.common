@@ -20,6 +20,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Queue;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.joda.time.LocalDate;
 
@@ -31,6 +33,11 @@ public final class UnitedFormatStock extends Stock {
 
 	private static final TimeZone timeZone;
 	private static final DateFormat dateFormat;
+
+	private static final class Regexps {
+		public static final Pattern stockNamePrefix = Pattern.compile("^_(\\d{3})(.+)$");
+		public static final Pattern notSymbolPrefix = Pattern.compile("^([\\^$#\\.])(.+)$");
+	}
 
 	static {
 		timeZone = TimeZone.getTimeZone("UTC");
@@ -203,6 +210,29 @@ public final class UnitedFormatStock extends Stock {
 			return filename;
 		}
 
+	}
+
+	public final static String toFilesystem(String stockName) {
+		final Matcher matcher = Regexps.notSymbolPrefix.matcher(stockName);
+		if (matcher.matches()) {
+			final String code = matcher.group(1);
+			final String postfix = matcher.group(2);
+			final int c = (int) (code.charAt(0));
+			final String prefix = String.format("_%03d", c);
+			return prefix + postfix;
+		}
+		return stockName;
+	}
+
+	public final static String fromFilesystem(String stockName) {
+		final Matcher matcher = Regexps.stockNamePrefix.matcher(stockName);
+		if (matcher.matches()) {
+			final int code = Integer.valueOf(matcher.group(1));
+			final String symbol = String.valueOf(Character.toChars(code));
+			final String postfix = matcher.group(2);
+			return symbol + postfix;
+		}
+		return stockName;
 	}
 
 }
