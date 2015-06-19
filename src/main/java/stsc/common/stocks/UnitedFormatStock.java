@@ -15,10 +15,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Queue;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +45,8 @@ public final class UnitedFormatStock extends Stock {
 		dateFormat.setTimeZone(timeZone);
 	}
 
-	final String name;
+	private final String instrumentName;
+	private final String fileName;
 	ArrayList<Day> days = new ArrayList<Day>();
 
 	public static UnitedFormatStock readFromCsvFile(String name, String filePath) throws IOException, ParseException {
@@ -54,8 +55,8 @@ public final class UnitedFormatStock extends Stock {
 		return UnitedFormatStock.newFromString(name, content);
 	}
 
-	public static UnitedFormatStock newFromString(String n, String content) throws ParseException {
-		UnitedFormatStock stock = new UnitedFormatStock(n);
+	public static UnitedFormatStock newFromString(String instrumentName, String content) throws ParseException {
+		UnitedFormatStock stock = new UnitedFormatStock(instrumentName);
 		String[] lines = content.split("\n");
 		Collections.reverse(Arrays.asList(lines));
 		for (int i = 0; i < lines.length - 1; ++i)
@@ -72,8 +73,8 @@ public final class UnitedFormatStock extends Stock {
 
 	public static UnitedFormatStock readFromUniteFormatFile(DataInputStream is) throws IOException {
 		UnitedFormatStock s = null;
-		String name = is.readUTF();
-		s = new UnitedFormatStock(name);
+		final String instrumentName = is.readUTF();
+		s = new UnitedFormatStock(instrumentName);
 		int daysLength = is.readInt();
 		for (int i = 0; i < daysLength; ++i) {
 			Date dayTime = Day.nullableTime(new Date(is.readLong()));
@@ -105,27 +106,25 @@ public final class UnitedFormatStock extends Stock {
 		}
 	}
 
-	public UnitedFormatStock(String name) {
-		this.name = name;
+	public UnitedFormatStock(final String instrumentName) {
+		this.instrumentName = instrumentName;
+		this.fileName = UnitedFormatStock.toFilesystem(instrumentName);
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public String getInstrumentName() {
+		return instrumentName;
 	}
 
 	public void storeUniteFormatToFolder(String folderPath) throws IOException {
-		storeUniteFormat(folderPath + "/" + getName() + EXTENSION);
-	}
-
-	public void storeUniteFormat(String filePath) throws IOException {
+		final String filePath = folderPath + "/" + fileName + EXTENSION;
 		try (DataOutputStream os = new DataOutputStream(new FileOutputStream(filePath))) {
 			storeUniteFormat(os);
 		}
 	}
 
-	public void storeUniteFormat(DataOutputStream os) throws IOException {
-		os.writeUTF(name);
+	private void storeUniteFormat(DataOutputStream os) throws IOException {
+		os.writeUTF(instrumentName);
 		os.writeInt(days.size());
 		for (Day day : days) {
 			os.writeLong(Day.nullableTime(day.date).getTime());
@@ -151,10 +150,8 @@ public final class UnitedFormatStock extends Stock {
 		return lines.length > 1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see stsc.common.StockInterface#getDays()
+	/**
+	 * Days Content.
 	 */
 	@Override
 	public ArrayList<Day> getDays() {
@@ -162,8 +159,8 @@ public final class UnitedFormatStock extends Stock {
 	}
 
 	public String generatePartiallyDownloadLine() {
-		Date lastDate = days.get(days.size() - 1).date;
-		Calendar cal = Calendar.getInstance();
+		final Date lastDate = days.get(days.size() - 1).date;
+		final Calendar cal = Calendar.getInstance();
 		cal.setTime(lastDate);
 		if (new LocalDate(lastDate).equals(new LocalDate(new Date()))) {
 			return "";
@@ -171,17 +168,23 @@ public final class UnitedFormatStock extends Stock {
 		if (new LocalDate(lastDate).plusDays(1).equals(new LocalDate(new Date()))) {
 			return "";
 		}
-		if (new LocalDate(lastDate).plusDays(2).equals(new LocalDate(new Date()))) {
-			return "";
-		}
 		cal.add(Calendar.DATE, 1);
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 		int month = cal.get(Calendar.MONTH);
 		int year = cal.get(Calendar.YEAR);
-		return "http://ichart.yahoo.com/table.csv?s=" + name + "&a=" + month + "&b=" + day + "&c=" + year;
+		return "http://ichart.yahoo.com/table.csv?s=" + instrumentName + "&a=" + month + "&b=" + day + "&c=" + year;
 	}
 
-	public static void loadStockList(String folderData, Queue<String> fileNames) {
+	/**
+	 * Load file names of {@link UnitedFormatStock} from the selected folder.
+	 * 
+	 * @param folderData
+	 *            - folder path where
+	 * @param fileNames
+	 *            - collection of strings (file names) those have
+	 *            {@link #EXTENSION} and placed at the folderData
+	 */
+	public static void loadStockList(final String folderData, Collection<String> fileNames) {
 		File folder = new File(folderData);
 		File[] listOfFiles = folder.listFiles();
 		Arrays.sort(listOfFiles, new FileComparator());

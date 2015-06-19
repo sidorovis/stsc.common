@@ -14,7 +14,7 @@ public final class MemoryStock extends Stock {
 	}
 
 	@Override
-	public String getName() {
+	public String getInstrumentName() {
 		return name;
 	}
 

@@ -9,7 +9,7 @@ import stsc.common.DayComparator;
 
 public abstract class Stock {
 
-	public abstract String getName();
+	public abstract String getInstrumentName();
 
 	public abstract ArrayList<Day> getDays();
 
@@ -23,7 +23,7 @@ public abstract class Stock {
 
 	@Override
 	public String toString() {
-		String result = "Stock(" + getName() + ")\n";
+		String result = "Stock(" + getInstrumentName() + ")\n";
 		int count = 0;
 		final ArrayList<Day> days = new ArrayList<>(getDays());
 		Collections.reverse(days);

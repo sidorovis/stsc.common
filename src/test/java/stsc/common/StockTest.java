@@ -42,9 +42,9 @@ public class StockTest {
 	@Test
 	public void testUniteFormat() throws IOException, ParseException {
 		UnitedFormatStock s = UnitedFormatStock.readFromCsvFile("aaoi", "./test_data/aaoi.csv");
-		s.storeUniteFormat("./test/aaoi.uf");
-		Stock s_copy = UnitedFormatStock.readFromUniteFormatFile("./test/aaoi.uf");
-		Assert.assertEquals("aaoi", s_copy.getName());
+		s.storeUniteFormatToFolder("./test/");
+		final Stock s_copy = UnitedFormatStock.readFromUniteFormatFile("./test/aaoi.uf");
+		Assert.assertEquals("aaoi", s_copy.getInstrumentName());
 		new File("./test/aaoi.uf").delete();
 		Assert.assertEquals(75, s_copy.getDays().size());
 		Assert.assertEquals(75, s.getDays().size());
