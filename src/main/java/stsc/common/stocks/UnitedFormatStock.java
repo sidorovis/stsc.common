@@ -196,8 +196,8 @@ public final class UnitedFormatStock extends Stock {
 		}
 	}
 
-	public static String generatePath(String dataFolder, String stockName) {
-		return dataFolder + stockName + EXTENSION;
+	public static String generatePath(String dataFolder, String filesystemName) {
+		return dataFolder + filesystemName + EXTENSION;
 	}
 
 	private final static class FileComparator implements Comparator<File> {

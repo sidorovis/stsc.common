@@ -23,6 +23,8 @@ public class UnitedFormatStockTest {
 		Assert.assertEquals("#FTSE", UnitedFormatStock.fromFilesystem("_035FTSE"));
 		Assert.assertEquals("$FTSE", UnitedFormatStock.fromFilesystem("_036FTSE"));
 		Assert.assertEquals(".FTSE", UnitedFormatStock.fromFilesystem("_046FTSE"));
+		Assert.assertEquals("^N225", UnitedFormatStock.fromFilesystem("_094N225"));
+
 		Assert.assertEquals("aapl", UnitedFormatStock.toFilesystem("aapl"));
 		Assert.assertEquals("spy", UnitedFormatStock.toFilesystem("spy"));
 		Assert.assertEquals("_094FTSE", UnitedFormatStock.toFilesystem("^FTSE"));
