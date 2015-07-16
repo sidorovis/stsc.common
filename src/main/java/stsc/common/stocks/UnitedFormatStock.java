@@ -3,7 +3,6 @@ package stsc.common.stocks;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,9 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -175,44 +172,8 @@ public final class UnitedFormatStock extends Stock {
 		return "http://ichart.yahoo.com/table.csv?s=" + instrumentName + "&a=" + month + "&b=" + day + "&c=" + year;
 	}
 
-	/**
-	 * Load file names of {@link UnitedFormatStock} from the selected folder.
-	 * 
-	 * @param folderData
-	 *            - folder path where
-	 * @param fileNames
-	 *            - collection of strings (file names) those have
-	 *            {@link #EXTENSION} and placed at the folderData
-	 */
-	public static void loadStockList(final String folderData, Collection<String> fileNames) {
-		File folder = new File(folderData);
-		File[] listOfFiles = folder.listFiles();
-		Arrays.sort(listOfFiles, new FileComparator());
-		for (File file : listOfFiles) {
-			String filename = file.getName();
-			if (file.isFile() && filename.endsWith(EXTENSION)) {
-				fileNames.add(filename.substring(0, filename.length() - EXTENSION.length()));
-			}
-		}
-	}
-
 	public static String generatePath(String dataFolder, String filesystemName) {
 		return dataFolder + filesystemName + EXTENSION;
-	}
-
-	private final static class FileComparator implements Comparator<File> {
-
-		@Override
-		public int compare(File left, File right) {
-			return getStockName(left).compareTo(getStockName(right));
-		}
-
-		private String getStockName(File file) {
-			String filename = file.getName();
-			filename = filename.substring(0, filename.length() - EXTENSION.length());
-			return filename;
-		}
-
 	}
 
 	/*
