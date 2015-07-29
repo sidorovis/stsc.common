@@ -17,7 +17,7 @@ public abstract class Stock {
 		ArrayList<Day> days = getDays();
 		int index = Collections.binarySearch(days, new Day(date), DayComparator.getInstance());
 		if (index < 0)
-			index = -index;
+			index = -index - 1;
 		return index;
 	}
 
