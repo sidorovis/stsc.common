@@ -104,8 +104,8 @@ public final class UnitedFormatStock extends Stock {
 	}
 
 	public UnitedFormatStock(final String instrumentName) {
-		this.instrumentName = instrumentName;
-		this.fileName = UnitedFormatStock.toFilesystem(instrumentName);
+		this.instrumentName = instrumentName.toLowerCase();
+		this.fileName = UnitedFormatStock.toFilesystem(instrumentName.toLowerCase());
 	}
 
 	@Override
