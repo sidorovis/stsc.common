@@ -1,7 +1,14 @@
 package stsc.common;
 
+/**
+ * Long Or Short - positive of negative remark for signal or whatever usage. <br/>
+ * For stock market ideally describe long or short position (look for stock
+ * market terms in advance).
+ */
 public enum Side {
-	LONG, SHORT;
+
+	LONG, // positive remark
+	SHORT; // negative remark
 
 	public int value() {
 		switch (this) {

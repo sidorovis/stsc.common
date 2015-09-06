@@ -5,6 +5,17 @@ import java.util.Map;
 
 import stsc.common.FromToPeriod;
 
+/**
+ * Interface for collection of {@link AlgorithmSetting}. <br/>
+ * Provide dozen of possibilities and probably should be refactored because of
+ * that. <br/>
+ * 1) methods to get internal configuration; <br/>
+ * 2) methods to get internal configuration with 'empty' values (by defining
+ * default value); <br/>
+ * 3) mutate methods (for genetic algorithms (probably that one should be moved
+ * out); <br/>
+ * 4) clone method (for different ways of best settings search).
+ */
 public interface AlgorithmSettings extends Cloneable {
 
 	// Getters for vectors
