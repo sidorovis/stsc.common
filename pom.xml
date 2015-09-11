@@ -10,6 +10,10 @@
 	<name>stsc.common</name>
 	<url>https://github.com/sidorovis/stsc</url>
 
+	<properties>
+		<github.global.server>github</github.global.server>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>stsc-bom-repository</id>
@@ -64,9 +68,9 @@
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.11</version>
+				<version>0.12</version>
 				<configuration>
-					<message>#2 Maven artifacts for ${project.version}</message>
+					<message>#3 new version deployment ${project.version}</message>
 					<noJekyll>true</noJekyll>
 					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
 					<branch>refs/heads/stsc.common</branch>
