@@ -38,17 +38,17 @@ public class StockTest {
 
 	@Test
 	public void testGeneratePartiallyDownloadLine() throws IOException, ParseException, URISyntaxException {
-		UnitedFormatStock aaoi = UnitedFormatStock.readFromCsvFile("aaoi", resourceToPath("aaoi.csv"));
+		final UnitedFormatStock aaoi = UnitedFormatStock.readFromCsvFile("aaoi", resourceToPath("aaoi.csv"));
 		Assert.assertEquals("http://ichart.yahoo.com/table.csv?s=aaoi&a=0&b=14&c=2014", aaoi.generatePartiallyDownloadLine());
-		UnitedFormatStock aahc = UnitedFormatStock.readFromCsvFile("aahc", resourceToPath("aahc.csv"));
+		final UnitedFormatStock aahc = UnitedFormatStock.readFromCsvFile("aahc", resourceToPath("aahc.csv"));
 		Assert.assertEquals("http://ichart.yahoo.com/table.csv?s=aahc&a=5&b=4&c=2013", aahc.generatePartiallyDownloadLine());
 	}
 
 	@Test
 	public void testAddDaysFromString() throws IOException, ParseException, URISyntaxException {
-		UnitedFormatStock aaoi = UnitedFormatStock.readFromCsvFile("aaoi", resourceToPath("aaoi.csv"));
-		byte[] data = Files.readAllBytes(Paths.get(resourceToPath("aaoi_add.csv")));
-		String content = new String(data);
+		final UnitedFormatStock aaoi = UnitedFormatStock.readFromCsvFile("aaoi", resourceToPath("aaoi.csv"));
+		final byte[] data = Files.readAllBytes(Paths.get(resourceToPath("aaoi_add.csv")));
+		final String content = new String(data);
 		aaoi.addDaysFromString(content);
 		Assert.assertEquals(91, aaoi.getDays().size());
 	}

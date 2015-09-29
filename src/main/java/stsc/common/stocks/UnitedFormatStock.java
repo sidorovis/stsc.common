@@ -6,7 +6,9 @@ import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,6 +26,38 @@ import org.joda.time.LocalDate;
 
 import stsc.common.Day;
 
+/**
+ * United Format Stock class is main data for stock (financial instrument) data.
+ * By default could be used with many different use cases. <br/>
+ * <u>1. Creating mechanisms: </u><br/>
+ * 1.a. creating from CSV file (see Yahoo Stock Market Datafeed format
+ * https://code.google.com/p/yahoo-finance-managed/wiki/csvHistQuotesDownload ).
+ * <br/>
+ * 1.b. creating from CSV like string.<br/>
+ * 1.c. creating from binary file (internal format (will be described later in
+ * this file). <br/>
+ * <b> 1.c.1. remember that Stock could be extended with data using, (make sure
+ * that you don't call addDaysFromString method during processing). </b> <br/>
+ * <u>2. Storing mechanism is method storeUniteFormatToFolder(). </u> <br/>
+ * Use it for storing {@link UnitedFormatStock} in binary representation. <br/>
+ * Make sure that result file contain only lowercase letters / digits / '_'
+ * underscore character / '^' pow character.
+ * <hr/>
+ * <b>Internal Format</b><br/>
+ * Internal (United) stock format is an binary format that was created to easily
+ * store / load data from the filesystem files. <br/>
+ * Format is next: <br/>
+ * [UTF name] - stock name<br/>
+ * [Int daysAmount] - amount of stored days<br/>
+ * <i>:: daysAmount size loop ::</i> <br/>
+ * -- [Long dateTime] - value for one of the days<br/>
+ * -- [Double open] - open value for {@link Day} data;<br/>
+ * -- [Double high] - high value for {@link Day} data;<br/>
+ * -- [Double low] - low value for {@link Day} data;<br/>
+ * -- [Double close] - close value for {@link Day} data;<br/>
+ * -- [Double volume] - volume value for {@link Day} data;<br/>
+ * -- [Double adjClose] - adjective close value for {@link Day} data;<br/>
+ */
 public final class UnitedFormatStock extends Stock {
 
 	public final static String EXTENSION = ".uf";
@@ -44,7 +78,7 @@ public final class UnitedFormatStock extends Stock {
 
 	private final String instrumentName;
 	private final String fileName;
-	ArrayList<Day> days = new ArrayList<Day>();
+	private final ArrayList<Day> days = new ArrayList<Day>();
 
 	public static UnitedFormatStock readFromCsvFile(String name, String filePath) throws IOException, ParseException {
 		byte[] data = Files.readAllBytes(Paths.get(filePath));
@@ -74,14 +108,14 @@ public final class UnitedFormatStock extends Stock {
 		s = new UnitedFormatStock(instrumentName);
 		int daysLength = is.readInt();
 		for (int i = 0; i < daysLength; ++i) {
-			Date dayTime = Day.nullableTime(new Date(is.readLong()));
-			double open = is.readDouble();
-			double high = is.readDouble();
-			double low = is.readDouble();
-			double close = is.readDouble();
-			double volume = is.readDouble();
-			double adjClose = is.readDouble();
-			Day newDay = new Day(dayTime, Prices.calculatePrices(open, high, low, close, adjClose), volume, adjClose);
+			final Date dayTime = Day.nullableTime(new Date(is.readLong()));
+			final double open = is.readDouble();
+			final double high = is.readDouble();
+			final double low = is.readDouble();
+			final double close = is.readDouble();
+			final double volume = is.readDouble();
+			final double adjClose = is.readDouble();
+			final Day newDay = new Day(dayTime, Prices.calculatePrices(open, high, low, close, adjClose), volume, adjClose);
 			s.addDay(newDay);
 		}
 		return s;
@@ -103,7 +137,7 @@ public final class UnitedFormatStock extends Stock {
 		}
 	}
 
-	public UnitedFormatStock(final String instrumentName) {
+	private UnitedFormatStock(final String instrumentName) {
 		this.instrumentName = instrumentName.toLowerCase();
 		this.fileName = UnitedFormatStock.toFilesystem(instrumentName.toLowerCase());
 	}
@@ -113,9 +147,8 @@ public final class UnitedFormatStock extends Stock {
 		return instrumentName;
 	}
 
-	public void storeUniteFormatToFolder(String folderPath) throws IOException {
-		final String filePath = folderPath + "/" + fileName + EXTENSION;
-		try (DataOutputStream os = new DataOutputStream(new FileOutputStream(filePath))) {
+	public void storeUniteFormatToFolder(final String folderPath) throws IOException {
+		try (DataOutputStream os = new DataOutputStream(new FileOutputStream(generatePath(folderPath, fileName)))) {
 			storeUniteFormat(os);
 		}
 	}
@@ -138,6 +171,10 @@ public final class UnitedFormatStock extends Stock {
 		days.add(d);
 	}
 
+	/**
+	 * Please make sure that you use this method only when you are sure that
+	 * there is no parallel thread using this Stock data.
+	 */
 	public boolean addDaysFromString(String newData) throws ParseException {
 		String[] lines = newData.split("\n");
 		Collections.reverse(Arrays.asList(lines));
@@ -148,13 +185,24 @@ public final class UnitedFormatStock extends Stock {
 	}
 
 	/**
-	 * Days Content.
+	 * TODO think how to delete this method from this class.<br/>
+	 * Days Content, very dangerous method. Please use it carefully.
 	 */
 	@Override
 	public ArrayList<Day> getDays() {
 		return days;
 	}
 
+	/**
+	 * TODO think about moving this method to some Yahoo specific folder
+	 * 
+	 * This method check current date (Calendar.getInstance()) and if last date
+	 * from Stock is older then two days, returns http link to yahoo stock
+	 * datafeed continuation.
+	 * 
+	 * @return http yahoo market datafeed link to download (new part of the
+	 *         stock).
+	 */
 	public String generatePartiallyDownloadLine() {
 		final Date lastDate = days.get(days.size() - 1).date;
 		final Calendar cal = Calendar.getInstance();
@@ -172,8 +220,9 @@ public final class UnitedFormatStock extends Stock {
 		return "http://ichart.yahoo.com/table.csv?s=" + instrumentName + "&a=" + month + "&b=" + day + "&c=" + year;
 	}
 
-	public static String generatePath(String dataFolder, String filesystemName) {
-		return dataFolder + filesystemName + EXTENSION;
+	private static String generatePath(String folderPath, String fileName) {
+		final Path filePath = FileSystems.getDefault().getPath(folderPath).resolve(fileName + EXTENSION);
+		return filePath.toString();
 	}
 
 	/*
