@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
-public class EodExecution {
+public class EodExecution implements Cloneable, Execution {
 
 	private final String executionName;
 	private final String algorithmName;
@@ -34,10 +34,12 @@ public class EodExecution {
 		this.algorithmSettings = algorithmSettings;
 	}
 
+	@Override
 	public String getExecutionName() {
 		return executionName;
 	}
 
+	@Override
 	public String getAlgorithmName() {
 		return algorithmName;
 	}
@@ -76,6 +78,7 @@ public class EodExecution {
 		algorithmSettings.stringHashCode(sb);
 	}
 
+	@Override
 	public AlgorithmSettings getSettings() {
 		return algorithmSettings;
 	}

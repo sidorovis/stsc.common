@@ -7,7 +7,7 @@ import org.apache.commons.lang3.Validate;
 
 import stsc.common.storage.SignalsStorage;
 
-public class StockExecution implements Cloneable {
+public class StockExecution implements Cloneable, Execution {
 
 	private final String executionName;
 	private final String algorithmName;
@@ -38,14 +38,17 @@ public class StockExecution implements Cloneable {
 		this.algorithmSettings = algorithmSettings;
 	}
 
+	@Override
 	public String getExecutionName() {
 		return executionName;
 	}
 
+	@Override
 	public String getAlgorithmName() {
 		return algorithmName;
 	}
 
+	@Override
 	public AlgorithmSettings getSettings() {
 		return algorithmSettings;
 	}
@@ -66,8 +69,7 @@ public class StockExecution implements Cloneable {
 				final StockAlgorithm algo = constructor.newInstance(values);
 				return algo;
 			} catch (InvocationTargetException e) {
-				throw new BadAlgorithmException("Exception while loading algo: " + algorithmName + "( " + executionName + " ) , exception: "
-						+ e.getTargetException().toString());
+				throw new BadAlgorithmException("Exception while loading algo: " + algorithmName + "( " + executionName + " ) , exception: " + e.getTargetException().toString());
 			}
 		} catch (NoSuchMethodException e) {
 			throw new BadAlgorithmException("Bad Algorithm '" + algorithmName + "', constructor was not found: " + e.toString());
