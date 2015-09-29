@@ -6,6 +6,12 @@ import java.lang.reflect.InvocationTargetException;
 import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
+/**
+ * This is an implementation for {@link Execution}. Execution for
+ * {@link EodAlgorithm}. <br/>
+ * end-of-day term in Stsc project mean special type of algorithms that works
+ * with full available datafeed for such period at one time.
+ */
 public class EodExecution implements Cloneable, Execution {
 
 	private final String executionName;

@@ -7,6 +7,11 @@ import org.apache.commons.lang3.Validate;
 
 import stsc.common.storage.SignalsStorage;
 
+/**
+ * Stock Execution is an implementation for {@link Execution} and it could be
+ * defined as {@link StockAlgorithm} instance. This type of executions process
+ * only one small (unit) part of datafeed for smallest possible period.
+ */
 public class StockExecution implements Cloneable, Execution {
 
 	private final String executionName;
