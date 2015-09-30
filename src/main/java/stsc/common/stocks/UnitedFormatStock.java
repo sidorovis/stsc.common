@@ -15,14 +15,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.joda.time.LocalDate;
 
 import stsc.common.Day;
 
@@ -193,34 +190,7 @@ public final class UnitedFormatStock extends Stock {
 		return days;
 	}
 
-	/**
-	 * TODO think about moving this method to some Yahoo specific folder
-	 * 
-	 * This method check current date (Calendar.getInstance()) and if last date
-	 * from Stock is older then two days, returns http link to yahoo stock
-	 * datafeed continuation.
-	 * 
-	 * @return http yahoo market datafeed link to download (new part of the
-	 *         stock).
-	 */
-	public String generatePartiallyDownloadLine() {
-		final Date lastDate = days.get(days.size() - 1).date;
-		final Calendar cal = Calendar.getInstance();
-		cal.setTime(lastDate);
-		if (new LocalDate(lastDate).equals(new LocalDate(new Date()))) {
-			return "";
-		}
-		if (new LocalDate(lastDate).plusDays(1).equals(new LocalDate(new Date()))) {
-			return "";
-		}
-		cal.add(Calendar.DATE, 1);
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		int month = cal.get(Calendar.MONTH);
-		int year = cal.get(Calendar.YEAR);
-		return "http://ichart.yahoo.com/table.csv?s=" + instrumentName + "&a=" + month + "&b=" + day + "&c=" + year;
-	}
-
-	private static String generatePath(String folderPath, String fileName) {
+	public static String generatePath(String folderPath, String fileName) {
 		final Path filePath = FileSystems.getDefault().getPath(folderPath).resolve(fileName + EXTENSION);
 		return filePath.toString();
 	}
