@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -96,6 +97,12 @@ public final class UnitedFormatStock extends Stock {
 	public static UnitedFormatStock readFromUniteFormatFile(String filePath) throws IOException {
 		try (DataInputStream is = new DataInputStream(new BufferedInputStream(new FileInputStream(filePath)))) {
 			return readFromUniteFormatFile(is);
+		}
+	}
+
+	public static UnitedFormatStock readFromUniteFormatFile(final InputStream is) throws IOException {
+		try (DataInputStream dis = new DataInputStream(is)) {
+			return readFromUniteFormatFile(dis);
 		}
 	}
 

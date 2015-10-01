@@ -21,6 +21,12 @@ public class UnitedFormatStockTest {
 	}
 
 	@Test
+	public void testUnitedFormatStockFromInputStream() throws IOException, URISyntaxException {
+		final UnitedFormatStock aapl = UnitedFormatStock.readFromUniteFormatFile(UnitedFormatStockTest.class.getResourceAsStream("../aapl.uf"));
+		Assert.assertEquals(94.26, aapl.getDays().get(aapl.getDays().size() - 1).prices.open, Settings.doubleEpsilon);
+	}
+
+	@Test
 	public void testToFromFilesystem() {
 		Assert.assertEquals("aapl", UnitedFormatStock.fromFilesystem("aapl"));
 		Assert.assertEquals("spy", UnitedFormatStock.fromFilesystem("spy"));
