@@ -101,7 +101,7 @@ public final class UnitedFormatStock extends Stock {
 	}
 
 	public static UnitedFormatStock readFromUniteFormatFile(final InputStream is) throws IOException {
-		try (DataInputStream dis = new DataInputStream(is)) {
+		try (DataInputStream dis = new DataInputStream(new BufferedInputStream(is))) {
 			return readFromUniteFormatFile(dis);
 		}
 	}
