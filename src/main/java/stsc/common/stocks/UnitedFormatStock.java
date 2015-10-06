@@ -60,18 +60,12 @@ public final class UnitedFormatStock extends Stock {
 
 	public final static String EXTENSION = ".uf";
 
-	private static final TimeZone timeZone;
-	private static final DateFormat dateFormat;
+	private final TimeZone timeZone;
+	private final DateFormat dateFormat;
 
 	private static final class Regexps {
 		public static final Pattern stockNamePrefix = Pattern.compile("^_(\\d{3})(.+)$");
 		public static final Pattern notSymbolPrefix = Pattern.compile("^([\\^$#\\.])(.+)$");
-	}
-
-	static {
-		timeZone = TimeZone.getTimeZone("UTC");
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		dateFormat.setTimeZone(timeZone);
 	}
 
 	private final String instrumentName;
@@ -128,7 +122,7 @@ public final class UnitedFormatStock extends Stock {
 	static private void storeDataLine(UnitedFormatStock stock, String line) throws ParseException {
 		final String lineDate = line.substring(0, 10);
 		try {
-			final Date date = Day.nullableTime(dateFormat.parse(lineDate));
+			final Date date = Day.nullableTime(stock.dateFormat.parse(lineDate));
 			final String[] tokens = line.split(",");
 			final double volume = Double.parseDouble(tokens[5]);
 			final double adjClose = Double.parseDouble(tokens[6]);
@@ -142,6 +136,9 @@ public final class UnitedFormatStock extends Stock {
 	}
 
 	private UnitedFormatStock(final String instrumentName) {
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		timeZone = TimeZone.getTimeZone("UTC");
+		dateFormat.setTimeZone(timeZone);
 		this.instrumentName = instrumentName.toLowerCase();
 		this.fileName = UnitedFormatStock.toFilesystem(instrumentName.toLowerCase());
 	}
