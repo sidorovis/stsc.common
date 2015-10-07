@@ -4,7 +4,7 @@
 
 	<groupId>stsc</groupId>
 	<artifactId>stsc.common</artifactId>
-	<version>0.0.19-BOM</version>
+	<version>0.0.20-AUXFIX</version>
 	<packaging>jar</packaging>
 
 	<name>stsc.common</name>

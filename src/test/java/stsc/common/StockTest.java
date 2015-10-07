@@ -50,7 +50,7 @@ public class StockTest {
 		final Path testPath = FileSystems.getDefault().getPath(testFolder.getRoot().getAbsolutePath());
 		final UnitedFormatStock s = UnitedFormatStock.readFromCsvFile("aaoi", resourceToPath("aaoi.csv"));
 		s.storeUniteFormatToFolder(testPath.toFile().getAbsolutePath());
-		final Stock s_copy = UnitedFormatStock.readFromUniteFormatFile(testPath.resolve("aaoi.uf").toFile().getAbsolutePath());
+		final Stock s_copy = UnitedFormatStock.readFromUniteFormatFile(testPath.resolve(s.getFilesystemName().getFilename()).toFile().getAbsolutePath());
 		Assert.assertEquals("aaoi", s_copy.getInstrumentName());
 		testPath.resolve("aaoi.uf").toFile().delete();
 		Assert.assertEquals(75, s_copy.getDays().size());

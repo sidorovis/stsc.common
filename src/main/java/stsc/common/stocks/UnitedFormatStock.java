@@ -7,9 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,8 +17,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import stsc.common.Day;
 
@@ -58,18 +54,11 @@ import stsc.common.Day;
  */
 public final class UnitedFormatStock extends Stock {
 
-	public final static String EXTENSION = ".uf";
-
 	private final TimeZone timeZone;
 	private final DateFormat dateFormat;
 
-	private static final class Regexps {
-		public static final Pattern stockNamePrefix = Pattern.compile("^_(\\d{3})(.+)$");
-		public static final Pattern notSymbolPrefix = Pattern.compile("^([\\^$#\\.])(.+)$");
-	}
-
 	private final String instrumentName;
-	private final String fileName;
+	private final UnitedFormatFilename fileName;
 	private final ArrayList<Day> days = new ArrayList<Day>();
 
 	public static UnitedFormatStock readFromCsvFile(String name, String filePath) throws IOException, ParseException {
@@ -140,7 +129,7 @@ public final class UnitedFormatStock extends Stock {
 		timeZone = TimeZone.getTimeZone("UTC");
 		dateFormat.setTimeZone(timeZone);
 		this.instrumentName = instrumentName.toLowerCase();
-		this.fileName = UnitedFormatStock.toFilesystem(instrumentName.toLowerCase());
+		this.fileName = UnitedFormatHelper.toFilesystem(instrumentName);
 	}
 
 	@Override
@@ -148,8 +137,12 @@ public final class UnitedFormatStock extends Stock {
 		return instrumentName;
 	}
 
+	public UnitedFormatFilename getFilesystemName() {
+		return fileName;
+	}
+
 	public void storeUniteFormatToFolder(final String folderPath) throws IOException {
-		try (DataOutputStream os = new DataOutputStream(new FileOutputStream(generatePath(folderPath, fileName)))) {
+		try (DataOutputStream os = new DataOutputStream(new FileOutputStream(UnitedFormatHelper.generatePath(folderPath, fileName)))) {
 			storeUniteFormat(os);
 		}
 	}
@@ -192,40 +185,6 @@ public final class UnitedFormatStock extends Stock {
 	@Override
 	public ArrayList<Day> getDays() {
 		return days;
-	}
-
-	public static String generatePath(String folderPath, String fileName) {
-		final Path filePath = FileSystems.getDefault().getPath(folderPath).resolve(fileName + EXTENSION);
-		return filePath.toString();
-	}
-
-	/*
-	 * ^FTSE -> _094FTSE
-	 */
-	public final static String toFilesystem(String stockName) {
-		final Matcher matcher = Regexps.notSymbolPrefix.matcher(stockName);
-		if (matcher.matches()) {
-			final String code = matcher.group(1);
-			final String postfix = matcher.group(2);
-			final int c = (int) (code.charAt(0));
-			final String prefix = String.format("_%03d", c);
-			return prefix + postfix;
-		}
-		return stockName;
-	}
-
-	/*
-	 * _094FTSE -> ^FTSE
-	 */
-	public final static String fromFilesystem(String stockName) {
-		final Matcher matcher = Regexps.stockNamePrefix.matcher(stockName);
-		if (matcher.matches()) {
-			final int code = Integer.valueOf(matcher.group(1));
-			final String symbol = String.valueOf(Character.toChars(code));
-			final String postfix = matcher.group(2);
-			return symbol + postfix;
-		}
-		return stockName;
 	}
 
 }
