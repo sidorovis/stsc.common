@@ -3,7 +3,6 @@ package stsc.common.stocks;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,19 +76,13 @@ public final class UnitedFormatStock extends Stock {
 		return stock;
 	}
 
-	public static UnitedFormatStock readFromUniteFormatFile(String filePath) throws IOException {
-		try (DataInputStream is = new DataInputStream(new BufferedInputStream(new FileInputStream(filePath)))) {
-			return readFromUniteFormatFile(is);
-		}
-	}
-
 	public static UnitedFormatStock readFromUniteFormatFile(final InputStream is) throws IOException {
 		try (DataInputStream dis = new DataInputStream(new BufferedInputStream(is))) {
 			return readFromUniteFormatFile(dis);
 		}
 	}
 
-	public static UnitedFormatStock readFromUniteFormatFile(DataInputStream is) throws IOException {
+	private static UnitedFormatStock readFromUniteFormatFile(DataInputStream is) throws IOException {
 		UnitedFormatStock s = null;
 		final String instrumentName = is.readUTF();
 		s = new UnitedFormatStock(instrumentName);

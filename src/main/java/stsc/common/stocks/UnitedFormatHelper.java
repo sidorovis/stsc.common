@@ -55,8 +55,8 @@ public final class UnitedFormatHelper {
 			final String code = matcher.group(1);
 			final String postfix = matcher.group(2);
 			final int c = (int) (code.charAt(0));
-			final String prefix = String.format("_%03d", c);
-			return new UnitedFormatFilename(prefix + postfix + getExtension());
+			final String numericPrefix = String.format("_%03d", c);
+			return new UnitedFormatFilename(getPrefix() + numericPrefix + postfix + getExtension());
 		}
 		return new UnitedFormatFilename(getPrefix() + stockName + getExtension());
 	}

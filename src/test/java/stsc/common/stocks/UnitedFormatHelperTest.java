@@ -9,10 +9,10 @@ public class UnitedFormatHelperTest {
 	public void testToFromFilesystem() {
 		Assert.assertEquals("_aapl" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("aapl").getFilename());
 		Assert.assertEquals("_spy" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("spy").getFilename());
-		Assert.assertEquals("_094FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("^FTSE").getFilename());
-		Assert.assertEquals("_046FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem(".FTSE").getFilename());
-		Assert.assertEquals("_035FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("#FTSE").getFilename());
-		Assert.assertEquals("_036FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("$FTSE").getFilename());
+		Assert.assertEquals("__094FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("^FTSE").getFilename());
+		Assert.assertEquals("__046FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem(".FTSE").getFilename());
+		Assert.assertEquals("__035FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("#FTSE").getFilename());
+		Assert.assertEquals("__036FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("$FTSE").getFilename());
 
 		Assert.assertEquals("__094FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("_094FTSE").getFilename());
 		Assert.assertEquals("__046FTSE" + UnitedFormatHelper.getExtension(), UnitedFormatHelper.toFilesystem("_046FTSE").getFilename());

@@ -1,7 +1,9 @@
 package stsc.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -50,10 +52,12 @@ public class StockTest {
 		final Path testPath = FileSystems.getDefault().getPath(testFolder.getRoot().getAbsolutePath());
 		final UnitedFormatStock s = UnitedFormatStock.readFromCsvFile("aaoi", resourceToPath("aaoi.csv"));
 		s.storeUniteFormatToFolder(testPath.toFile().getAbsolutePath());
-		final Stock s_copy = UnitedFormatStock.readFromUniteFormatFile(testPath.resolve(s.getFilesystemName().getFilename()).toFile().getAbsolutePath());
-		Assert.assertEquals("aaoi", s_copy.getInstrumentName());
-		testPath.resolve("aaoi.uf").toFile().delete();
-		Assert.assertEquals(75, s_copy.getDays().size());
+		try (InputStream is = new FileInputStream(testPath.resolve(s.getFilesystemName().getFilename()).toFile())) {
+			final Stock s_copy = UnitedFormatStock.readFromUniteFormatFile(is);
+			Assert.assertEquals("aaoi", s_copy.getInstrumentName());
+			testPath.resolve("aaoi.uf").toFile().delete();
+			Assert.assertEquals(75, s_copy.getDays().size());
+		}
 		Assert.assertEquals(75, s.getDays().size());
 	}
 
