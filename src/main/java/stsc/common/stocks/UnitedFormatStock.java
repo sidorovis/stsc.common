@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -134,13 +135,13 @@ public final class UnitedFormatStock extends Stock {
 		return fileName;
 	}
 
-	public void storeUniteFormatToFolder(final String folderPath) throws IOException {
-		try (DataOutputStream os = new DataOutputStream(new FileOutputStream(UnitedFormatHelper.generatePath(folderPath, fileName)))) {
+	public void storeUniteFormatToFolder(final Path folderPath) throws IOException {
+		try (DataOutputStream os = new DataOutputStream(new FileOutputStream(folderPath.resolve(fileName.getFilename()).toFile()))) {
 			storeUniteFormat(os);
 		}
 	}
 
-	private void storeUniteFormat(DataOutputStream os) throws IOException {
+	private void storeUniteFormat(final DataOutputStream os) throws IOException {
 		os.writeUTF(instrumentName);
 		os.writeInt(days.size());
 		for (Day day : days) {

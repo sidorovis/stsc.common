@@ -1,7 +1,5 @@
 package stsc.common.stocks;
 
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,11 +57,6 @@ public final class UnitedFormatHelper {
 			return new UnitedFormatFilename(getPrefix() + numericPrefix + postfix + getExtension());
 		}
 		return new UnitedFormatFilename(getPrefix() + stockName + getExtension());
-	}
-
-	public static String generatePath(final String folderPath, final UnitedFormatFilename fileName) {
-		final Path filePath = FileSystems.getDefault().getPath(folderPath).resolve(fileName.getFilename());
-		return filePath.toString();
 	}
 
 }

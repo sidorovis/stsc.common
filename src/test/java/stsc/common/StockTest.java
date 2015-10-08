@@ -51,7 +51,7 @@ public class StockTest {
 	public void testUniteFormat() throws IOException, ParseException, URISyntaxException {
 		final Path testPath = FileSystems.getDefault().getPath(testFolder.getRoot().getAbsolutePath());
 		final UnitedFormatStock s = UnitedFormatStock.readFromCsvFile("aaoi", resourceToPath("aaoi.csv"));
-		s.storeUniteFormatToFolder(testPath.toFile().getAbsolutePath());
+		s.storeUniteFormatToFolder(testPath);
 		try (InputStream is = new FileInputStream(testPath.resolve(s.getFilesystemName().getFilename()).toFile())) {
 			final Stock s_copy = UnitedFormatStock.readFromUniteFormatFile(is);
 			Assert.assertEquals("aaoi", s_copy.getInstrumentName());
