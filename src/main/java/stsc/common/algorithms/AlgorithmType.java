@@ -16,7 +16,7 @@ public enum AlgorithmType {
 	STOCK_VALUE("Stock"), //
 	EOD_VALUE("Eod");
 
-	private String value;
+	private final String value;
 
 	private AlgorithmType(final String value) {
 		this.value = value;

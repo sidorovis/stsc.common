@@ -10,11 +10,15 @@ import stsc.common.signals.SerieSignal;
 import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
-public class EodAlgorithmInit {
+/**
+ * Initialize class for {@link EodAlgorithm}. Contain all necessary fields for
+ * end of day algorithm initialization.
+ */
+public final class EodAlgorithmInit {
 
-	final String executionName;
-	final SignalsStorage signalsStorage;
-	final AlgorithmSettings settings;
+	private final String executionName;
+	private final SignalsStorage signalsStorage;
+	private final AlgorithmSettings settings;
 
 	private final Broker broker;
 

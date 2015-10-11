@@ -6,13 +6,17 @@ import java.lang.reflect.InvocationTargetException;
 import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
-public class EodExecution {
+/**
+ * End of day execution. Execution characterize description of future instance
+ * of algorithm with defined {@link AlgorithmSettings}.
+ */
+public final class EodExecution {
 
 	private final String executionName;
 	private final String algorithmName;
 	private final Class<? extends EodAlgorithm> algorithmType;
 
-	private AlgorithmSettings algorithmSettings;
+	private final AlgorithmSettings algorithmSettings;
 
 	public static Class<? extends EodAlgorithm> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {

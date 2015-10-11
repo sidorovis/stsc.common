@@ -9,6 +9,10 @@ import stsc.common.signals.SignalContainer;
 import stsc.common.signals.SignalsSerie;
 import stsc.common.signals.SerieSignal;
 
+/**
+ * Abstract class for all on-stock algorithms. <br/>
+ * Provide abstract methods for algorithms to add / receive signals.
+ */
 public abstract class StockAlgorithm {
 
 	private final StockAlgorithmInit init;
@@ -58,8 +62,7 @@ public abstract class StockAlgorithm {
 		return init.getIndexSize(stockName, executionName);
 	}
 
-	public abstract Optional<SignalsSerie<SerieSignal>> registerSignalsClass(final StockAlgorithmInit initialize)
-			throws BadAlgorithmException;
+	public abstract Optional<SignalsSerie<SerieSignal>> registerSignalsClass(final StockAlgorithmInit initialize) throws BadAlgorithmException;
 
 	public abstract void process(Day day) throws BadSignalException;
 

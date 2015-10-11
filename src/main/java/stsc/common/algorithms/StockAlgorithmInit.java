@@ -7,7 +7,7 @@ import stsc.common.signals.SignalContainer;
 import stsc.common.signals.SerieSignal;
 import stsc.common.storage.SignalsStorage;
 
-public class StockAlgorithmInit {
+public final class StockAlgorithmInit {
 
 	private final String executionName;
 	final SignalsStorage signalsStorage;

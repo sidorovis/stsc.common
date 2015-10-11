@@ -11,6 +11,11 @@ import stsc.common.signals.SignalsSerie;
 import stsc.common.signals.SerieSignal;
 import stsc.common.trading.Broker;
 
+/**
+ * Abstract class for all end-of-day algorithms. <br/>
+ * Provide abstract methods for algorithms to add signals / trade (send buy /
+ * sell signals) / receive signals.
+ */
 public abstract class EodAlgorithm {
 
 	private final EodAlgorithmInit init;
