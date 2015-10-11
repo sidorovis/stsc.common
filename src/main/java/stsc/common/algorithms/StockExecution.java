@@ -8,10 +8,10 @@ import org.apache.commons.lang3.Validate;
 import stsc.common.storage.SignalsStorage;
 
 /**
- * Stock execution. Execution characterize description of future instance of
- * algorithm with defined {@link AlgorithmSettings}.
+ * <<<<<<< HEAD Stock execution. Execution characterize description of future
+ * instance of algorithm with defined {@link AlgorithmSettings}.
  */
-public final class StockExecution implements Cloneable {
+public class StockExecution implements Cloneable, Execution {
 
 	private final String executionName;
 	private final String algorithmName;
@@ -42,14 +42,17 @@ public final class StockExecution implements Cloneable {
 		this.algorithmSettings = algorithmSettings;
 	}
 
+	@Override
 	public String getExecutionName() {
 		return executionName;
 	}
 
+	@Override
 	public String getAlgorithmName() {
 		return algorithmName;
 	}
 
+	@Override
 	public AlgorithmSettings getSettings() {
 		return algorithmSettings;
 	}

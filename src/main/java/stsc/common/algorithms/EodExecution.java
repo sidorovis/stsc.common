@@ -7,10 +7,10 @@ import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
 /**
- * End of day execution. Execution characterize description of future instance
- * of algorithm with defined {@link AlgorithmSettings}.
+ * <<<<<<< HEAD End of day execution. Execution characterize description of
+ * future instance of algorithm with defined {@link AlgorithmSettings}.
  */
-public final class EodExecution {
+public class EodExecution implements Cloneable, Execution {
 
 	private final String executionName;
 	private final String algorithmName;
@@ -38,10 +38,12 @@ public final class EodExecution {
 		this.algorithmSettings = algorithmSettings;
 	}
 
+	@Override
 	public String getExecutionName() {
 		return executionName;
 	}
 
+	@Override
 	public String getAlgorithmName() {
 		return algorithmName;
 	}
@@ -80,6 +82,7 @@ public final class EodExecution {
 		algorithmSettings.stringHashCode(sb);
 	}
 
+	@Override
 	public AlgorithmSettings getSettings() {
 		return algorithmSettings;
 	}
