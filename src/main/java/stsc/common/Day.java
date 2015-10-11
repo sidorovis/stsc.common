@@ -10,8 +10,19 @@ import java.util.TimeZone;
 import org.joda.time.LocalDate;
 import stsc.common.stocks.Prices;
 
+/**
+ * Day data - is a collection of information about smallest unit of input data
+ * type. <br/>
+ * For market trading, this smallest unit (input data type) contain next fields:
+ * <br/>
+ * 1. {@link Date} (original date/time of the unit); <br/>
+ * 2. {@link Prices} - Open-High-Low-Close prices for market data day; <br/>
+ * 3. {@link #volume} - double value of traded shares amount; <br/>
+ * 4. {@link #adjClose} - double value of adjective close price.
+ */
 public final class Day implements Comparable<Day> {
 
+	// This is static and that's OK. Because we use it only for debug.
 	private static final DateFormat df;
 
 	static {
@@ -85,6 +96,6 @@ public final class Day implements Comparable<Day> {
 
 	@Override
 	public String toString() {
-		return "Day:" + df.format(date) + "("+getPrices()+")";
+		return "Day:" + df.format(date) + "(" + getPrices() + ")";
 	}
 }

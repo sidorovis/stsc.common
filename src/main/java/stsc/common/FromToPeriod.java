@@ -8,6 +8,11 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * Description for time period (from / to). <br/>
+ * Used for simulation process to describe period (from first to last trading
+ * dates).
+ */
 public final class FromToPeriod implements Externalizable {
 
 	private final Date from;

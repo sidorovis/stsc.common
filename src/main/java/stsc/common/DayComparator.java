@@ -2,6 +2,11 @@ package stsc.common;
 
 import java.util.Comparator;
 
+/**
+ * Compare {@link Day}'s by date field. <br/>
+ * 
+ * @mark Singleton.
+ */
 public final class DayComparator implements Comparator<Day> {
 
 	private static DayComparator instance = new DayComparator();

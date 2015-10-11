@@ -1,6 +1,10 @@
 package stsc.common;
 
+/**
+ * Stores initialize time and time of {@link #finish()} call.
+ */
 public final class TimeTracker {
+
 	private final long timeStart;
 	private long timeEnd;
 

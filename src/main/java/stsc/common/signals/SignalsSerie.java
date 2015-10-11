@@ -4,6 +4,18 @@ import java.util.Date;
 
 import stsc.common.BadSignalException;
 
+/**
+ * Abstract class for serie of signals. Inherited by CommonSignalSerie /
+ * LimitSignalSerie. <br/>
+ * Represents storage for signals from algorithm-developer point of view. <br/>
+ * Could add new signal (should automatically increase signal index and provide
+ * access to added signals by date and by index). <br/>
+ * Also should return amount of stored elements (last index not real stored
+ * elements).
+ * 
+ * @param <SignalType>
+ *            - signal type that will be created by algorithms.
+ */
 public abstract class SignalsSerie<SignalType> {
 
 	private final Class<? extends SignalType> signalClass;
