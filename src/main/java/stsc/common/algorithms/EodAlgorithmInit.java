@@ -32,8 +32,8 @@ public final class EodAlgorithmInit<TimeUnitType> {
 	 * createInit(...) is a method that generate Init object for StockAlgorithm
 	 * initialization
 	 */
-	public StockAlgorithmInit createInit(String executionName, AlgorithmSettings settings, String stockName) {
-		return new StockAlgorithmInit(executionName, signalsStorage, stockName, settings);
+	public StockAlgorithmInit<TimeUnitType> createInit(String executionName, AlgorithmSettings settings, String stockName) {
+		return new StockAlgorithmInit<TimeUnitType>(executionName, signalsStorage, stockName, settings);
 	}
 
 	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String executionName, TimeUnitType timeUnit) {

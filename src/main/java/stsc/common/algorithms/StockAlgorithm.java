@@ -61,7 +61,8 @@ public abstract class StockAlgorithm<TimeUnitType> {
 		return init.getIndexSize(stockName, executionName);
 	}
 
-	public abstract Optional<SignalsSerie<SerieSignal, TimeUnitType>> registerSignalsClass(final StockAlgorithmInit initialize) throws BadAlgorithmException;
+	public abstract Optional<SignalsSerie<SerieSignal, TimeUnitType>> registerSignalsClass(final StockAlgorithmInit<TimeUnitType> initialize)
+			throws BadAlgorithmException;
 
 	public abstract void process(Day day) throws BadSignalException;
 

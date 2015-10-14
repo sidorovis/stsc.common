@@ -18,6 +18,7 @@ public class EodExecution<TimeUnitType> implements Cloneable, Execution {
 
 	private final AlgorithmSettings algorithmSettings;
 
+	@SuppressWarnings("unchecked")
 	public static <TimeUnitType, T extends EodAlgorithm<TimeUnitType>> Class<T> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
 			final Class<?> classType = Class.forName(algorithmName);

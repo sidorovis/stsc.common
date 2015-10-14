@@ -19,6 +19,7 @@ public class StockExecution<TimeUnitType> implements Cloneable, Execution {
 
 	private final AlgorithmSettings algorithmSettings;
 
+	@SuppressWarnings("unchecked")
 	static <TimeUnitType, T extends StockAlgorithm<TimeUnitType>> Class<T> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
 			Class<?> classType = Class.forName(algorithmName);
