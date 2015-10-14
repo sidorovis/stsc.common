@@ -4,7 +4,7 @@
 
 	<groupId>stsc</groupId>
 	<artifactId>stsc.common</artifactId>
-	<version>0.0.20-AUXFIX</version>
+	<version>0.0.21-NOJODA</version>
 	<packaging>jar</packaging>
 
 	<name>stsc.common</name>
@@ -101,10 +101,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>

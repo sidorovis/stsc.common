@@ -2,10 +2,10 @@ package stsc.common.stocks;
 
 public final class Prices {
 
-	final double open;
-	final double high;
-	final double low;
-	final double close;
+	private final double open;
+	private final double high;
+	private final double low;
+	private final double close;
 
 	static Prices fromTokens(String[] tokens, double adjClose) {
 		double o = Double.parseDouble(tokens[1]);

@@ -1,11 +1,7 @@
 package stsc.common;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.text.ParseException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Properties;
 
 /**
@@ -13,10 +9,10 @@ import java.util.Properties;
  * Used for simulation process to describe period (from first to last trading
  * dates).
  */
-public final class FromToPeriod implements Externalizable {
+public final class FromToPeriod { // implements Externalizable {
 
-	private final Date from;
-	private final Date to;
+	private final LocalDate from;
+	private final LocalDate to;
 
 	public FromToPeriod(final Properties p) throws ParseException {
 		this(p.getProperty("Period.from"), p.getProperty("Period.to"));
@@ -27,16 +23,16 @@ public final class FromToPeriod implements Externalizable {
 		this.to = Day.createDate(to);
 	}
 
-	public FromToPeriod(final Date from, final Date to) {
+	public FromToPeriod(final LocalDate from, final LocalDate to) {
 		this.from = from;
 		this.to = to;
 	}
 
-	public Date getFrom() {
+	public LocalDate getFrom() {
 		return from;
 	}
 
-	public Date getTo() {
+	public LocalDate getTo() {
 		return to;
 	}
 
@@ -44,21 +40,22 @@ public final class FromToPeriod implements Externalizable {
 	public String toString() {
 		return from.toString() + " -> " + to.toString();
 	}
-
-	public static FromToPeriod read(ObjectInput in) throws IOException {
-		final Date from = new Date(in.readLong());
-		final Date to = new Date(in.readLong());
-		return new FromToPeriod(from, to);
-	}
-
-	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-	}
-
-	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeLong(from.getTime());
-		out.writeLong(to.getTime());
-	}
+	//
+	// public static FromToPeriod read(ObjectInput in) throws IOException {
+	// final LocalDate from = LocalDate.ofEpochDay(in.readLong());
+	// final LocalDate to = LocalDate.ofEpochDay(in.readLong());
+	// return new FromToPeriod(from, to);
+	// }
+	//
+	// @Override
+	// public void readExternal(ObjectInput in) throws IOException,
+	// ClassNotFoundException {
+	// }
+	//
+	// @Override
+	// public void writeExternal(ObjectOutput out) throws IOException {
+	// out.writeLong(from.toEpochDay());
+	// out.writeLong(to.toEpochDay());
+	// }
 
 }

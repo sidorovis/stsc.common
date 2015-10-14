@@ -16,7 +16,7 @@ public final class DayComparator implements Comparator<Day> {
 	}
 
 	public int compare(final Day o1, final Day o2) {
-		return o1.date.compareTo(o2.date);
+		return o1.compareTo(o2);
 	}
 
 	public static DayComparator getInstance() {

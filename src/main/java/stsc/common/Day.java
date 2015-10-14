@@ -1,13 +1,13 @@
 package stsc.common;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.TimeZone;
 
-import org.joda.time.LocalDate;
 import stsc.common.stocks.Prices;
 
 /**
@@ -15,7 +15,7 @@ import stsc.common.stocks.Prices;
  * type. <br/>
  * For market trading, this smallest unit (input data type) contain next fields:
  * <br/>
- * 1. {@link Date} (original date/time of the unit); <br/>
+ * 1. {@link LocalDate} (original date/time of the unit); <br/>
  * 2. {@link Prices} - Open-High-Low-Close prices for market data day; <br/>
  * 3. {@link #volume} - double value of traded shares amount; <br/>
  * 4. {@link #adjClose} - double value of adjective close price.
@@ -23,50 +23,29 @@ import stsc.common.stocks.Prices;
 public final class Day implements Comparable<Day> {
 
 	// This is static and that's OK. Because we use it only for debug.
-	private static final DateFormat df;
+	private static final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder(). //
+			appendPattern("dd-MM-yyyy"). //
+			toFormatter(Locale.US). //
+			withZone(ZoneOffset.UTC);
 
 	static {
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-		df = new SimpleDateFormat("dd-MM-yyyy");
-		df.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
-	public final Date date;
-	public final Prices prices;
-	public final double volume;
-	public final double adjClose;
+	private final LocalDate date;
+	private final Prices prices;
+	private final double volume;
+	private final double adjClose;
 
-	public static Date createDate(final LocalDate date) {
-		return nullableTime(date.toDate());
+	public static LocalDate createDate(final String dateRepresentation) throws DateTimeParseException {
+		return LocalDate.parse(dateRepresentation, dateTimeFormatter);
 	}
 
-	public static Date createDate() {
-		return nullableTime(new Date());
+	public static Day createForSearch(final LocalDate d) {
+		return new Day(d, null, 0.0, 0.0);
 	}
 
-	public static Date createDate(String dateRepresentation) throws ParseException {
-		return df.parse(dateRepresentation);
-	}
-
-	static public Date nullableTime(Date date) {
-		final Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		final Date result = cal.getTime();
-		return result;
-	}
-
-	public Day(Date d) {
-		date = d;
-		prices = null;
-		volume = 0.0;
-		adjClose = 0.0;
-	}
-
-	public Day(Date d, Prices p, double v, double ac) {
+	public Day(final LocalDate d, final Prices p, final double v, final double ac) {
 		date = d;
 		prices = p;
 		volume = v;
@@ -81,7 +60,7 @@ public final class Day implements Comparable<Day> {
 		return adjClose;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
@@ -90,12 +69,12 @@ public final class Day implements Comparable<Day> {
 	}
 
 	@Override
-	public int compareTo(Day o) {
-		return date.compareTo(o.date);
+	public int compareTo(final Day day) {
+		return date.compareTo(day.date);
 	}
 
 	@Override
 	public String toString() {
-		return "Day:" + df.format(date) + "(" + getPrices() + ")";
+		return "Day:" + date.toString() + "(" + getPrices() + ")";
 	}
 }

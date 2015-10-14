@@ -1,8 +1,8 @@
 package stsc.common.stocks;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 import stsc.common.Day;
 import stsc.common.DayComparator;
@@ -13,9 +13,9 @@ public abstract class Stock {
 
 	public abstract ArrayList<Day> getDays();
 
-	public int findDayIndex(Date date) {
+	public int findDayIndex(final LocalDate date) {
 		ArrayList<Day> days = getDays();
-		int index = Collections.binarySearch(days, new Day(date), DayComparator.getInstance());
+		int index = Collections.binarySearch(days, Day.createForSearch(date), DayComparator.getInstance());
 		if (index < 0)
 			index = -index - 1;
 		return index;

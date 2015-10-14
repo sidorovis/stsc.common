@@ -20,6 +20,6 @@ public class UnitedFormatStockTest {
 		final Path path = FileSystems.getDefault().getPath(new File(UnitedFormatStockTest.class.getResource("./").toURI()).getAbsolutePath());
 		final InputStream is = new FileInputStream(path.getParent().resolve(UnitedFormatHelper.toFilesystem("aapl").getFilename()).toFile());
 		final UnitedFormatStock aapl = UnitedFormatStock.readFromUniteFormatFile(is);
-		Assert.assertEquals(94.26, aapl.getDays().get(aapl.getDays().size() - 1).prices.open, Settings.doubleEpsilon);
+		Assert.assertEquals(94.26, aapl.getDays().get(aapl.getDays().size() - 1).getPrices().getOpen(), Settings.doubleEpsilon);
 	}
 }

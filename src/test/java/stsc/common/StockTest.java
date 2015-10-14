@@ -10,9 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.time.LocalDate;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -64,9 +63,9 @@ public class StockTest {
 	@Test
 	public void testFindDayIndex() throws IOException, ParseException, URISyntaxException {
 		final Stock s = UnitedFormatStock.readFromCsvFile("aaoi", resourceToPath("aaoi.csv"));
-		Assert.assertEquals(16, new LocalDateTime(s.getDays().get(s.findDayIndex(new LocalDate(2013, 12, 14).toDate())).getDate()).getDayOfMonth());
-		Assert.assertEquals(16, new LocalDateTime(s.getDays().get(s.findDayIndex(new LocalDate(2013, 12, 15).toDate())).getDate()).getDayOfMonth());
-		Assert.assertEquals(16, new LocalDateTime(s.getDays().get(s.findDayIndex(new LocalDate(2013, 12, 16).toDate())).getDate()).getDayOfMonth());
-		Assert.assertEquals(17, new LocalDateTime(s.getDays().get(s.findDayIndex(new LocalDate(2013, 12, 17).toDate())).getDate()).getDayOfMonth());
+		Assert.assertEquals(16, s.getDays().get(s.findDayIndex(LocalDate.of(2013, 12, 14))).getDate().getDayOfMonth());
+		Assert.assertEquals(16, s.getDays().get(s.findDayIndex(LocalDate.of(2013, 12, 15))).getDate().getDayOfMonth());
+		Assert.assertEquals(16, s.getDays().get(s.findDayIndex(LocalDate.of(2013, 12, 16))).getDate().getDayOfMonth());
+		Assert.assertEquals(17, s.getDays().get(s.findDayIndex(LocalDate.of(2013, 12, 17))).getDate().getDayOfMonth());
 	}
 }

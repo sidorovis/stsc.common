@@ -9,13 +9,17 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import stsc.common.Day;
@@ -54,8 +58,17 @@ import stsc.common.Day;
  */
 public final class UnitedFormatStock extends Stock {
 
-	private final TimeZone timeZone;
-	private final DateFormat dateFormat;
+	private static final String LOCAL_DATE_VERSION_MARKER = "__LocalDateVersion__";
+
+	static {
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+	}
+
+	// This is static and that's OK. Because we use it only for debug.
+	private static final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder(). //
+			appendPattern("yyyy-MM-dd"). //
+			toFormatter(Locale.US). //
+			withZone(ZoneOffset.UTC);
 
 	private final String instrumentName;
 	private final UnitedFormatFilename fileName;
@@ -83,13 +96,36 @@ public final class UnitedFormatStock extends Stock {
 		}
 	}
 
-	private static UnitedFormatStock readFromUniteFormatFile(DataInputStream is) throws IOException {
+	private static UnitedFormatStock readFromUniteFormatFile(final DataInputStream is) throws IOException {
 		UnitedFormatStock s = null;
 		final String instrumentName = is.readUTF();
+		if (instrumentName.equals(LOCAL_DATE_VERSION_MARKER)) {
+			return readFromLocalDateUniteFormatFile(is);
+		}
 		s = new UnitedFormatStock(instrumentName);
 		int daysLength = is.readInt();
 		for (int i = 0; i < daysLength; ++i) {
-			final Date dayTime = Day.nullableTime(new Date(is.readLong()));
+			final long epochLongTime = is.readLong();
+			final LocalDate dayTime = new Date(epochLongTime).toInstant().atZone(ZoneOffset.UTC).toLocalDate();
+			final double open = is.readDouble();
+			final double high = is.readDouble();
+			final double low = is.readDouble();
+			final double close = is.readDouble();
+			final double volume = is.readDouble();
+			final double adjClose = is.readDouble();
+			final Day newDay = new Day(dayTime, Prices.calculatePrices(open, high, low, close, adjClose), volume, adjClose);
+			s.addDay(newDay);
+		}
+		return s;
+	}
+
+	private static UnitedFormatStock readFromLocalDateUniteFormatFile(DataInputStream is) throws IOException {
+		final String instrumentName = is.readUTF();
+		final UnitedFormatStock s = new UnitedFormatStock(instrumentName);
+		int daysLength = is.readInt();
+		for (int i = 0; i < daysLength; ++i) {
+			final long epochLongTime = is.readLong();
+			final LocalDate dayTime = LocalDate.ofEpochDay(epochLongTime);
 			final double open = is.readDouble();
 			final double high = is.readDouble();
 			final double low = is.readDouble();
@@ -105,23 +141,18 @@ public final class UnitedFormatStock extends Stock {
 	static private void storeDataLine(UnitedFormatStock stock, String line) throws ParseException {
 		final String lineDate = line.substring(0, 10);
 		try {
-			final Date date = Day.nullableTime(stock.dateFormat.parse(lineDate));
+			final LocalDate date = LocalDate.parse(lineDate, dateTimeFormatter);
 			final String[] tokens = line.split(",");
 			final double volume = Double.parseDouble(tokens[5]);
 			final double adjClose = Double.parseDouble(tokens[6]);
 			final Day newDay = new Day(date, Prices.fromTokens(tokens, adjClose), volume, adjClose);
 			stock.addDay(newDay);
-		} catch (ParseException e) {
-			throw new ParseException(e.toString() + " while parsing data: " + lineDate, 1);
-		} catch (NumberFormatException e) {
+		} catch (DateTimeParseException | NumberFormatException e) {
 			throw new ParseException(e.toString() + " while parsing data: '" + line + "' ", 1);
 		}
 	}
 
 	private UnitedFormatStock(final String instrumentName) {
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		timeZone = TimeZone.getTimeZone("UTC");
-		dateFormat.setTimeZone(timeZone);
 		this.instrumentName = instrumentName.toLowerCase();
 		this.fileName = UnitedFormatHelper.toFilesystem(instrumentName);
 	}
@@ -142,16 +173,17 @@ public final class UnitedFormatStock extends Stock {
 	}
 
 	private void storeUniteFormat(final DataOutputStream os) throws IOException {
+		os.writeUTF(LOCAL_DATE_VERSION_MARKER);
 		os.writeUTF(instrumentName);
 		os.writeInt(days.size());
 		for (Day day : days) {
-			os.writeLong(Day.nullableTime(day.date).getTime());
-			os.writeDouble(day.prices.open);
-			os.writeDouble(day.prices.high);
-			os.writeDouble(day.prices.low);
-			os.writeDouble(day.prices.close);
-			os.writeDouble(day.volume);
-			os.writeDouble(day.adjClose);
+			os.writeLong(day.getDate().toEpochDay());
+			os.writeDouble(day.getPrices().getOpen());
+			os.writeDouble(day.getPrices().getHigh());
+			os.writeDouble(day.getPrices().getLow());
+			os.writeDouble(day.getPrices().getClose());
+			os.writeDouble(day.getVolume());
+			os.writeDouble(day.getAdjClose());
 		}
 	}
 
