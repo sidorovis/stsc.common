@@ -1,12 +1,11 @@
 package stsc.common.algorithms;
 
-import java.util.Date;
 import java.util.Optional;
 
 import stsc.common.BadSignalException;
+import stsc.common.signals.SerieSignal;
 import stsc.common.signals.SignalContainer;
 import stsc.common.signals.SignalsSerie;
-import stsc.common.signals.SerieSignal;
 import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
@@ -14,15 +13,15 @@ import stsc.common.trading.Broker;
  * Initialize class for {@link EodAlgorithm}. Contain all necessary fields for
  * end of day algorithm initialization.
  */
-public final class EodAlgorithmInit {
+public final class EodAlgorithmInit<TimeUnitType> {
 
 	private final String executionName;
-	private final SignalsStorage signalsStorage;
+	private final SignalsStorage<TimeUnitType> signalsStorage;
 	private final AlgorithmSettings settings;
 
 	private final Broker broker;
 
-	public EodAlgorithmInit(String executionName, SignalsStorage signalsStorage, AlgorithmSettings settings, Broker broker) {
+	public EodAlgorithmInit(String executionName, SignalsStorage<TimeUnitType> signalsStorage, AlgorithmSettings settings, Broker broker) {
 		this.executionName = executionName;
 		this.signalsStorage = signalsStorage;
 		this.settings = settings;
@@ -37,30 +36,30 @@ public final class EodAlgorithmInit {
 		return new StockAlgorithmInit(executionName, signalsStorage, stockName, settings);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(String executionName, Date date) {
-		return signalsStorage.getEodSignal(executionName, date);
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String executionName, TimeUnitType timeUnit) {
+		return signalsStorage.getEodSignal(executionName, timeUnit);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(String executionName, int index) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String executionName, int index) {
 		return signalsStorage.getEodSignal(executionName, index);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(String stockName, String executionName, Date date) {
-		return signalsStorage.getStockSignal(stockName, executionName, date);
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String stockName, String executionName, TimeUnitType timeUnit) {
+		return signalsStorage.getStockSignal(stockName, executionName, timeUnit);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(String stockName, String executionName, int index) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String stockName, String executionName, int index) {
 		return signalsStorage.getStockSignal(stockName, executionName, index);
 	}
 
-	protected final void registerEodSignalsType(final Optional<SignalsSerie<SerieSignal>> serie) {
+	protected final void registerEodSignalsType(final Optional<SignalsSerie<SerieSignal, TimeUnitType>> serie) {
 		if (serie.isPresent()) {
 			signalsStorage.registerEodAlgorithmSerie(executionName, serie.get());
 		}
 	}
 
-	protected final void addSignal(Date date, SerieSignal signal) throws BadSignalException {
-		signalsStorage.addEodSignal(executionName, date, signal);
+	protected final void addSignal(TimeUnitType timeUnit, SerieSignal signal) throws BadSignalException {
+		signalsStorage.addEodSignal(executionName, timeUnit, signal);
 	}
 
 	protected final int getIndexSize() {

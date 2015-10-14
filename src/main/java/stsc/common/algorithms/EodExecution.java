@@ -10,18 +10,18 @@ import stsc.common.trading.Broker;
  * <<<<<<< HEAD End of day execution. Execution characterize description of
  * future instance of algorithm with defined {@link AlgorithmSettings}.
  */
-public class EodExecution implements Cloneable, Execution {
+public class EodExecution<TimeUnitType> implements Cloneable, Execution {
 
 	private final String executionName;
 	private final String algorithmName;
-	private final Class<? extends EodAlgorithm> algorithmType;
+	private final Class<? extends EodAlgorithm<TimeUnitType>> algorithmType;
 
 	private final AlgorithmSettings algorithmSettings;
 
-	public static Class<? extends EodAlgorithm> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
+	public static <TimeUnitType, T extends EodAlgorithm<TimeUnitType>> Class<T> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
-			Class<?> classType = Class.forName(algorithmName);
-			return classType.asSubclass(EodAlgorithm.class);
+			final Class<?> classType = Class.forName(algorithmName);
+			return (Class<T>) classType.asSubclass(EodAlgorithm.class);
 		} catch (ClassNotFoundException e) {
 			throw new BadAlgorithmException("Algorithm class '" + algorithmName + "' was not found: " + e.toString());
 		}
@@ -31,7 +31,7 @@ public class EodExecution implements Cloneable, Execution {
 		this(executionName, generateAlgorithm(algorithmName), algorithmSettings);
 	}
 
-	public EodExecution(String executionName, Class<? extends EodAlgorithm> algorithmType, AlgorithmSettings algorithmSettings) {
+	public EodExecution(String executionName, Class<? extends EodAlgorithm<TimeUnitType>> algorithmType, AlgorithmSettings algorithmSettings) {
 		this.executionName = executionName;
 		this.algorithmName = algorithmType.getName();
 		this.algorithmType = algorithmType;
@@ -48,19 +48,19 @@ public class EodExecution implements Cloneable, Execution {
 		return algorithmName;
 	}
 
-	public Class<? extends EodAlgorithm> getAlgorithmType() {
+	public Class<? extends EodAlgorithm<TimeUnitType>> getAlgorithmType() {
 		return algorithmType;
 	}
 
-	public EodAlgorithm getInstance(Broker broker, SignalsStorage signals) throws BadAlgorithmException {
+	public EodAlgorithm<TimeUnitType> getInstance(Broker broker, SignalsStorage<TimeUnitType> signals) throws BadAlgorithmException {
 		try {
-			final EodAlgorithmInit init = new EodAlgorithmInit(executionName, signals, algorithmSettings, broker);
+			final EodAlgorithmInit<TimeUnitType> init = new EodAlgorithmInit<TimeUnitType>(executionName, signals, algorithmSettings, broker);
 
 			final Class<?>[] constructorParameters = { EodAlgorithmInit.class };
-			final Constructor<? extends EodAlgorithm> constructor = algorithmType.getConstructor(constructorParameters);
+			final Constructor<? extends EodAlgorithm<TimeUnitType>> constructor = algorithmType.getConstructor(constructorParameters);
 			final Object[] params = { init };
 
-			final EodAlgorithm algo = constructor.newInstance(params);
+			final EodAlgorithm<TimeUnitType> algo = constructor.newInstance(params);
 			return algo;
 		} catch (NoSuchMethodException e) {
 			throw new BadAlgorithmException("Bad Algorithm '" + algorithmName + "', constructor was not found: " + e.toString());
@@ -88,8 +88,8 @@ public class EodExecution implements Cloneable, Execution {
 	}
 
 	@Override
-	public EodExecution clone() {
-		return new EodExecution(executionName, algorithmType, algorithmSettings.clone());
+	public EodExecution<TimeUnitType> clone() {
+		return new EodExecution<TimeUnitType>(executionName, algorithmType, algorithmSettings.clone());
 	}
 
 	@Override

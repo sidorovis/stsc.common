@@ -1,52 +1,51 @@
 package stsc.common.algorithms;
 
-import java.util.Date;
 import java.util.Optional;
 
 import stsc.common.BadSignalException;
 import stsc.common.Day;
+import stsc.common.signals.SerieSignal;
 import stsc.common.signals.SignalContainer;
 import stsc.common.signals.SignalsSerie;
-import stsc.common.signals.SerieSignal;
 
 /**
  * Abstract class for all on-stock algorithms. <br/>
  * Provide abstract methods for algorithms to add / receive signals.
  */
-public abstract class StockAlgorithm {
+public abstract class StockAlgorithm<TimeUnitType> {
 
-	private final StockAlgorithmInit init;
+	private final StockAlgorithmInit<TimeUnitType> init;
 
-	public StockAlgorithm(final StockAlgorithmInit init) throws BadAlgorithmException {
+	public StockAlgorithm(final StockAlgorithmInit<TimeUnitType> init) throws BadAlgorithmException {
 		this.init = init;
 		signalSerieRegistration(init);
 	}
 
-	private void signalSerieRegistration(final StockAlgorithmInit init) throws BadAlgorithmException {
+	private void signalSerieRegistration(final StockAlgorithmInit<TimeUnitType> init) throws BadAlgorithmException {
 		init.signalsStorage.registerStockAlgorithmSerie(init.getStockName(), init.getExecutionName(), registerSignalsClass(init));
 	}
 
-	protected final void addSignal(Date date, SerieSignal signal) throws BadSignalException {
-		init.addSignal(date, signal);
+	protected final void addSignal(TimeUnitType timeUnit, SerieSignal signal) throws BadSignalException {
+		init.addSignal(timeUnit, signal);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(final Date date) {
-		return init.getSignal(date);
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(final TimeUnitType timeUnit) {
+		return init.getSignal(timeUnit);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(final int index) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(final int index) {
 		return init.getSignal(index);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(final String executionName, final Date date) {
-		return init.getSignal(executionName, date);
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(final String executionName, final TimeUnitType timeUnit) {
+		return init.getSignal(executionName, timeUnit);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(final String executionName, final int index) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(final String executionName, final int index) {
 		return init.getSignal(executionName, index);
 	}
 
-	protected final SignalContainer<? extends SerieSignal> getSignal(String stockName, String executionName, final int index) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String stockName, String executionName, final int index) {
 		return init.getSignal(stockName, executionName, index);
 	}
 
@@ -62,7 +61,7 @@ public abstract class StockAlgorithm {
 		return init.getIndexSize(stockName, executionName);
 	}
 
-	public abstract Optional<SignalsSerie<SerieSignal>> registerSignalsClass(final StockAlgorithmInit initialize) throws BadAlgorithmException;
+	public abstract Optional<SignalsSerie<SerieSignal, TimeUnitType>> registerSignalsClass(final StockAlgorithmInit initialize) throws BadAlgorithmException;
 
 	public abstract void process(Day day) throws BadSignalException;
 

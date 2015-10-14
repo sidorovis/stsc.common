@@ -11,18 +11,18 @@ import stsc.common.storage.SignalsStorage;
  * <<<<<<< HEAD Stock execution. Execution characterize description of future
  * instance of algorithm with defined {@link AlgorithmSettings}.
  */
-public class StockExecution implements Cloneable, Execution {
+public class StockExecution<TimeUnitType> implements Cloneable, Execution {
 
 	private final String executionName;
 	private final String algorithmName;
-	private final Class<? extends StockAlgorithm> algorithmType;
+	private final Class<? extends StockAlgorithm<TimeUnitType>> algorithmType;
 
 	private final AlgorithmSettings algorithmSettings;
 
-	static Class<? extends StockAlgorithm> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
+	static <TimeUnitType, T extends StockAlgorithm<TimeUnitType>> Class<T> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
 			Class<?> classType = Class.forName(algorithmName);
-			return classType.asSubclass(StockAlgorithm.class);
+			return (Class<T>) classType.asSubclass(StockAlgorithm.class);
 		} catch (ClassNotFoundException e) {
 			throw new BadAlgorithmException("Algorithm class '" + algorithmName + "' was not found: " + e.toString());
 		}
@@ -32,7 +32,7 @@ public class StockExecution implements Cloneable, Execution {
 		this(executionName, generateAlgorithm(algorithmName), settings);
 	}
 
-	public StockExecution(String executionName, Class<? extends StockAlgorithm> algorithmType, AlgorithmSettings algorithmSettings) {
+	public StockExecution(String executionName, Class<? extends StockAlgorithm<TimeUnitType>> algorithmType, AlgorithmSettings algorithmSettings) {
 		Validate.notNull(executionName);
 		Validate.notNull(algorithmType);
 		Validate.notNull(algorithmSettings);
@@ -57,20 +57,20 @@ public class StockExecution implements Cloneable, Execution {
 		return algorithmSettings;
 	}
 
-	public Class<? extends StockAlgorithm> getAlgorithmType() {
+	public Class<? extends StockAlgorithm<TimeUnitType>> getAlgorithmType() {
 		return algorithmType;
 	}
 
-	public StockAlgorithm getInstance(final String stockName, final SignalsStorage signalsStorage) throws BadAlgorithmException {
+	public StockAlgorithm<TimeUnitType> getInstance(final String stockName, final SignalsStorage<TimeUnitType> signalsStorage) throws BadAlgorithmException {
 		try {
 			final Class<?>[] params = { StockAlgorithmInit.class };
-			final Constructor<? extends StockAlgorithm> constructor = algorithmType.getConstructor(params);
+			final Constructor<? extends StockAlgorithm<TimeUnitType>> constructor = algorithmType.getConstructor(params);
 
-			final StockAlgorithmInit init = new StockAlgorithmInit(executionName, signalsStorage, stockName, algorithmSettings);
+			final StockAlgorithmInit<TimeUnitType> init = new StockAlgorithmInit<TimeUnitType>(executionName, signalsStorage, stockName, algorithmSettings);
 			final Object[] values = { init };
 
 			try {
-				final StockAlgorithm algo = constructor.newInstance(values);
+				final StockAlgorithm<TimeUnitType> algo = constructor.newInstance(values);
 				return algo;
 			} catch (InvocationTargetException e) {
 				throw new BadAlgorithmException(
@@ -95,8 +95,8 @@ public class StockExecution implements Cloneable, Execution {
 	}
 
 	@Override
-	public StockExecution clone() {
-		return new StockExecution(executionName, algorithmType, algorithmSettings.clone());
+	public StockExecution<TimeUnitType> clone() {
+		return new StockExecution<TimeUnitType>(executionName, algorithmType, algorithmSettings.clone());
 	}
 
 	@Override

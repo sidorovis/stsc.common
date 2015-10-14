@@ -16,11 +16,11 @@ import stsc.common.trading.Broker;
  * Provide abstract methods for algorithms to add signals / trade (send buy /
  * sell signals) / receive signals.
  */
-public abstract class EodAlgorithm {
+public abstract class EodAlgorithm<TimeUnitType> {
 
-	private final EodAlgorithmInit init;
+	private final EodAlgorithmInit<TimeUnitType> init;
 
-	public EodAlgorithm(final EodAlgorithmInit init) throws BadAlgorithmException {
+	public EodAlgorithm(final EodAlgorithmInit<TimeUnitType> init) throws BadAlgorithmException {
 		this.init = init;
 		init.registerEodSignalsType(registerSignalsClass(init));
 	}
@@ -31,7 +31,8 @@ public abstract class EodAlgorithm {
 	 * 
 	 * @return Optional with {@link SignalsSerie} or {@link Optional#empty()}.
 	 */
-	public abstract Optional<SignalsSerie<SerieSignal>> registerSignalsClass(final EodAlgorithmInit init) throws BadAlgorithmException;
+	public abstract Optional<SignalsSerie<SerieSignal, TimeUnitType>> registerSignalsClass(final EodAlgorithmInit<TimeUnitType> init)
+			throws BadAlgorithmException;
 
 	/**
 	 * This method should be filled with iteration algorithm. (process datafeed
@@ -45,37 +46,37 @@ public abstract class EodAlgorithm {
 	 * addSignal to previously registered / created {@link SignalsSerie} at the
 	 * signals storage.
 	 */
-	protected final void addSignal(Date date, SerieSignal signal) throws BadSignalException {
-		init.addSignal(date, signal);
+	protected final void addSignal(TimeUnitType timeUnit, SerieSignal signal) throws BadSignalException {
+		init.addSignal(timeUnit, signal);
 	}
 
 	/**
 	 * getSignal from this execution and algorithm from storage (if it is
 	 * available)
 	 */
-	protected final SignalContainer<? extends SerieSignal> getSignal(Date date) {
-		return init.getSignal(init.getExecutionName(), date);
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(TimeUnitType timeUnit) {
+		return init.getSignal(init.getExecutionName(), timeUnit);
 	}
 
 	/**
 	 * getSignal from this execution and algorithm from storage (if it is
 	 * available) by index
 	 */
-	protected final SignalContainer<? extends SerieSignal> getSignal(int index) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(int index) {
 		return init.getSignal(init.getExecutionName(), index);
 	}
 
 	/**
 	 * getSignal from selected execution if it is available
 	 */
-	protected final SignalContainer<? extends SerieSignal> getSignal(String executionName, Date date) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String executionName, TimeUnitType date) {
 		return init.getSignal(executionName, date);
 	}
 
 	/**
 	 * getSignal from selected execution if it is available by index
 	 */
-	protected final SignalContainer<? extends SerieSignal> getSignal(String executionName, int index) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String executionName, int index) {
 		return init.getSignal(executionName, index);
 	}
 
@@ -83,15 +84,15 @@ public abstract class EodAlgorithm {
 	 * getSignal from selected stock (by name), selected execution if it is
 	 * available
 	 */
-	protected final SignalContainer<? extends SerieSignal> getSignal(String stockName, String executionName, Date date) {
-		return init.getSignal(stockName, executionName, date);
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String stockName, String executionName, TimeUnitType unitType) {
+		return init.getSignal(stockName, executionName, unitType);
 	}
 
 	/**
 	 * getSignal from selected stock (by name), selected execution if it is
 	 * available by index
 	 */
-	protected final SignalContainer<? extends SerieSignal> getSignal(String stockName, String executionName, int index) {
+	protected final SignalContainer<? extends SerieSignal, TimeUnitType> getSignal(String stockName, String executionName, int index) {
 		return init.getSignal(stockName, executionName, index);
 	}
 

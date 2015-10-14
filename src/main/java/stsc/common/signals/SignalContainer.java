@@ -1,28 +1,28 @@
 package stsc.common.signals;
 
-import java.util.Date;
 import java.util.Optional;
 
-public final class SignalContainer<SignalType> {
+public final class SignalContainer<SignalType, TimeUnitType> {
+
 	final int index;
-	final Date date;
+	final TimeUnitType date;
 	final Optional<SignalType> signal;
 
-	public static <T> SignalContainer<T> empty(Date date) {
-		return new SignalContainer<T>(0, date);
+	public static <T, TimeUnitType> SignalContainer<T, TimeUnitType> empty(TimeUnitType date) {
+		return new SignalContainer<T, TimeUnitType>(0, date);
 	}
 
-	public static <T> SignalContainer<T> empty(final int index) {
-		return new SignalContainer<T>(index, new Date());
+	public static <T, TimeUnitType> SignalContainer<T, TimeUnitType> empty(final int index, TimeUnitType defaultValue) {
+		return new SignalContainer<T, TimeUnitType>(index, defaultValue);
 	}
 
-	public SignalContainer(final int index, final Date date) {
+	public SignalContainer(final int index, final TimeUnitType date) {
 		this.index = index;
 		this.date = date;
 		this.signal = Optional.empty();
 	}
 
-	public SignalContainer(final int index, final Date date, final SignalType signal) {
+	public SignalContainer(final int index, final TimeUnitType date, final SignalType signal) {
 		this.index = index;
 		this.date = date;
 		this.signal = Optional.of(signal);
@@ -77,7 +77,7 @@ public final class SignalContainer<SignalType> {
 		return index;
 	}
 
-	public Date getDate() {
+	public TimeUnitType getDate() {
 		return date;
 	}
 

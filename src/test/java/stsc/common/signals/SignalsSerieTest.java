@@ -1,6 +1,6 @@
 package stsc.common.signals;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import stsc.common.BadSignalException;
 
 public class SignalsSerieTest {
 
-	private static class SignalsSerieHelper extends SignalsSerie<Integer> {
+	private static class SignalsSerieHelper extends SignalsSerie<Integer, LocalDate> {
 
 		private final Integer dateSignal = 15;
 		private Integer indexSignal = 24;
@@ -19,17 +19,17 @@ public class SignalsSerieTest {
 		}
 
 		@Override
-		public SignalContainer<Integer> getSignal(Date date) {
-			return new SignalContainer<Integer>(0, date, dateSignal);
+		public SignalContainer<Integer, LocalDate> getSignal(LocalDate date) {
+			return new SignalContainer<Integer, LocalDate>(0, date, dateSignal);
 		}
 
 		@Override
-		public SignalContainer<Integer> getSignal(int index) {
-			return new SignalContainer<Integer>(index, new Date(), indexSignal);
+		public SignalContainer<Integer, LocalDate> getSignal(int index) {
+			return new SignalContainer<Integer, LocalDate>(index, LocalDate.now(), indexSignal);
 		}
 
 		@Override
-		public void addSignal(Date date, Integer signal) throws BadSignalException {
+		public void addSignal(LocalDate date, Integer signal) throws BadSignalException {
 			indexSignal = signal;
 		}
 
@@ -48,9 +48,9 @@ public class SignalsSerieTest {
 	@Test
 	public void testSignalsSerie() throws BadSignalException {
 		final SignalsSerieHelper helper = new SignalsSerieHelper(Integer.class);
-		Assert.assertEquals(15, helper.getSignal(new Date()).getContent().intValue());
+		Assert.assertEquals(15, helper.getSignal(LocalDate.now()).getContent().intValue());
 		Assert.assertEquals(24, helper.getSignal(45).getContent().intValue());
-		helper.addSignal(new Date(), new Integer(56));
+		helper.addSignal(LocalDate.now(), new Integer(56));
 		Assert.assertEquals(56, helper.getSignal(99).getContent().intValue());
 	}
 }
