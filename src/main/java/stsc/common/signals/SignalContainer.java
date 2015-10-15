@@ -8,17 +8,23 @@ public final class SignalContainer<SignalType, TimeUnitType> {
 	final TimeUnitType date;
 	final Optional<SignalType> signal;
 
+	/**
+	 * @return empty value (index is 0)
+	 */
 	public static <T, TimeUnitType> SignalContainer<T, TimeUnitType> empty(TimeUnitType date) {
 		return new SignalContainer<T, TimeUnitType>(0, date);
 	}
 
-	public static <T, TimeUnitType> SignalContainer<T, TimeUnitType> empty(final int index, TimeUnitType defaultValue) {
-		return new SignalContainer<T, TimeUnitType>(index, defaultValue);
+	/**
+	 * @return empty value (date is null)
+	 */
+	public static <T, TimeUnitType> SignalContainer<T, TimeUnitType> empty(final int index) {
+		return new SignalContainer<T, TimeUnitType>(index, null);
 	}
 
-	public SignalContainer(final int index, final TimeUnitType date) {
+	private SignalContainer(final int index, final TimeUnitType timeUnit) {
 		this.index = index;
-		this.date = date;
+		this.date = timeUnit;
 		this.signal = Optional.empty();
 	}
 
