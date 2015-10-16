@@ -21,6 +21,12 @@ public interface BackgroundProcess<T> {
 	public T waitForBackgroundProcess() throws InterruptedException;
 
 	/**
+	 * returns rest amount of elements to process (could be 1 in the begin but
+	 * always 0 on the end);
+	 */
+	public int amountToProcess();
+
+	/**
 	 * Stop background process as fast as possible, result is not guaranteed.
 	 * <br/>
 	 * No waiting for all background process.
