@@ -8,8 +8,7 @@ import org.apache.commons.lang3.Validate;
 import stsc.common.storage.SignalsStorage;
 
 /**
- * <<<<<<< HEAD Stock execution. Execution characterize description of future
- * instance of algorithm with defined {@link AlgorithmSettings}.
+ * Stock execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmSettings}.
  */
 public class StockExecution implements Cloneable, Execution {
 
@@ -17,7 +16,7 @@ public class StockExecution implements Cloneable, Execution {
 	private final String algorithmName;
 	private final Class<? extends StockAlgorithm> algorithmType;
 
-	private final AlgorithmSettings algorithmSettings;
+	private final MutatingAlgorithmSettings algorithmSettings;
 
 	static Class<? extends StockAlgorithm> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
@@ -28,11 +27,11 @@ public class StockExecution implements Cloneable, Execution {
 		}
 	}
 
-	public StockExecution(final String executionName, final String algorithmName, AlgorithmSettings settings) throws BadAlgorithmException {
+	public StockExecution(final String executionName, final String algorithmName, MutatingAlgorithmSettings settings) throws BadAlgorithmException {
 		this(executionName, generateAlgorithm(algorithmName), settings);
 	}
 
-	public StockExecution(String executionName, Class<? extends StockAlgorithm> algorithmType, AlgorithmSettings algorithmSettings) {
+	public StockExecution(String executionName, Class<? extends StockAlgorithm> algorithmType, MutatingAlgorithmSettings algorithmSettings) {
 		Validate.notNull(executionName);
 		Validate.notNull(algorithmType);
 		Validate.notNull(algorithmSettings);
@@ -53,7 +52,7 @@ public class StockExecution implements Cloneable, Execution {
 	}
 
 	@Override
-	public AlgorithmSettings getSettings() {
+	public MutatingAlgorithmSettings getSettings() {
 		return algorithmSettings;
 	}
 
@@ -73,8 +72,7 @@ public class StockExecution implements Cloneable, Execution {
 				final StockAlgorithm algo = constructor.newInstance(values);
 				return algo;
 			} catch (InvocationTargetException e) {
-				throw new BadAlgorithmException(
-						"Exception while loading algo: " + algorithmName + "( " + executionName + " ) , exception: " + e.getTargetException().toString());
+				throw new BadAlgorithmException("Exception while loading algo: " + algorithmName + "( " + executionName + " ) , exception: " + e.getTargetException().toString());
 			}
 		} catch (NoSuchMethodException e) {
 			throw new BadAlgorithmException("Bad Algorithm '" + algorithmName + "', constructor was not found: " + e.toString());

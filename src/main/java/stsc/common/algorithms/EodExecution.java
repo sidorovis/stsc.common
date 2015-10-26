@@ -7,8 +7,7 @@ import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
 /**
- * <<<<<<< HEAD End of day execution. Execution characterize description of
- * future instance of algorithm with defined {@link AlgorithmSettings}.
+ * <<<<<<< HEAD End of day execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmSettings}.
  */
 public class EodExecution implements Cloneable, Execution {
 
@@ -16,7 +15,7 @@ public class EodExecution implements Cloneable, Execution {
 	private final String algorithmName;
 	private final Class<? extends EodAlgorithm> algorithmType;
 
-	private final AlgorithmSettings algorithmSettings;
+	private final MutatingAlgorithmSettings algorithmSettings;
 
 	public static Class<? extends EodAlgorithm> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
@@ -27,11 +26,11 @@ public class EodExecution implements Cloneable, Execution {
 		}
 	}
 
-	public EodExecution(String executionName, String algorithmName, AlgorithmSettings algorithmSettings) throws BadAlgorithmException {
+	public EodExecution(String executionName, String algorithmName, MutatingAlgorithmSettings algorithmSettings) throws BadAlgorithmException {
 		this(executionName, generateAlgorithm(algorithmName), algorithmSettings);
 	}
 
-	public EodExecution(String executionName, Class<? extends EodAlgorithm> algorithmType, AlgorithmSettings algorithmSettings) {
+	public EodExecution(String executionName, Class<? extends EodAlgorithm> algorithmType, MutatingAlgorithmSettings algorithmSettings) {
 		this.executionName = executionName;
 		this.algorithmName = algorithmType.getName();
 		this.algorithmType = algorithmType;
@@ -83,7 +82,7 @@ public class EodExecution implements Cloneable, Execution {
 	}
 
 	@Override
-	public AlgorithmSettings getSettings() {
+	public MutatingAlgorithmSettings getSettings() {
 		return algorithmSettings;
 	}
 
