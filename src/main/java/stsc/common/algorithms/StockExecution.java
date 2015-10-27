@@ -10,7 +10,7 @@ import stsc.common.storage.SignalsStorage;
 /**
  * Stock execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmSettings}.
  */
-public class StockExecution implements Cloneable, Execution {
+public class StockExecution implements Cloneable, Execution<StockAlgorithm> {
 
 	private final String executionName;
 	private final String algorithmName;
@@ -56,6 +56,7 @@ public class StockExecution implements Cloneable, Execution {
 		return algorithmSettings;
 	}
 
+	@Override
 	public Class<? extends StockAlgorithm> getAlgorithmType() {
 		return algorithmType;
 	}

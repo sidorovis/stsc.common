@@ -9,7 +9,7 @@ import stsc.common.trading.Broker;
 /**
  * <<<<<<< HEAD End of day execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmSettings}.
  */
-public class EodExecution implements Cloneable, Execution {
+public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 
 	private final String executionName;
 	private final String algorithmName;
@@ -47,6 +47,7 @@ public class EodExecution implements Cloneable, Execution {
 		return algorithmName;
 	}
 
+	@Override
 	public Class<? extends EodAlgorithm> getAlgorithmType() {
 		return algorithmType;
 	}
