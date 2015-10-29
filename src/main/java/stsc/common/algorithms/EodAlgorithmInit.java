@@ -11,29 +11,27 @@ import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
 /**
- * Initialize class for {@link EodAlgorithm}. Contain all necessary fields for
- * end of day algorithm initialization.
+ * Initialize class for {@link EodAlgorithm}. Contain all necessary fields for end of day algorithm initialization.
  */
 public final class EodAlgorithmInit {
 
 	private final String executionName;
 	private final SignalsStorage signalsStorage;
-	private final AlgorithmSettings settings;
+	private final AlgorithmConfiguration configuration;
 
 	private final Broker broker;
 
-	public EodAlgorithmInit(String executionName, SignalsStorage signalsStorage, AlgorithmSettings settings, Broker broker) {
+	public EodAlgorithmInit(final String executionName, final SignalsStorage signalsStorage, final AlgorithmConfiguration configuration, final Broker broker) {
 		this.executionName = executionName;
 		this.signalsStorage = signalsStorage;
-		this.settings = settings;
+		this.configuration = configuration;
 		this.broker = broker;
 	}
 
 	/**
-	 * createInit(...) is a method that generate Init object for StockAlgorithm
-	 * initialization
+	 * createInit(...) is a method that generate Init object for StockAlgorithm initialization
 	 */
-	public StockAlgorithmInit createInit(String executionName, AlgorithmSettings settings, String stockName) {
+	public StockAlgorithmInit createInit(String executionName, AlgorithmConfiguration settings, String stockName) {
 		return new StockAlgorithmInit(executionName, signalsStorage, stockName, settings);
 	}
 
@@ -71,8 +69,8 @@ public final class EodAlgorithmInit {
 		return executionName;
 	}
 
-	public final AlgorithmSettings getSettings() {
-		return settings;
+	public final AlgorithmConfiguration getSettings() {
+		return configuration;
 	}
 
 	public Broker getBroker() {

@@ -3,9 +3,9 @@ package stsc.common.algorithms;
 import java.util.Map;
 
 /**
- * {@link AlgorithmSettings} with possibility to Mutate them (genetic search algorithm).
+ * {@link AlgorithmConfiguration} with possibility to Mutate them (genetic search algorithm).
  */
-public interface MutatingAlgorithmSettings extends AlgorithmSettings {
+public interface MutatingAlgorithmConfiguration extends AlgorithmConfiguration {
 
 	// Not safe getters
 
@@ -33,5 +33,5 @@ public interface MutatingAlgorithmSettings extends AlgorithmSettings {
 
 	public void mutateSubExecution(int index, String value);
 
-	public MutatingAlgorithmSettings clone();
+	public MutatingAlgorithmConfiguration clone();
 }

@@ -12,6 +12,6 @@ public interface Execution<AlgorithmClassType> {
 
 	public Class<? extends AlgorithmClassType> getAlgorithmType();
 
-	public AlgorithmSettings getSettings();
+	public AlgorithmConfiguration getSettings();
 
 }

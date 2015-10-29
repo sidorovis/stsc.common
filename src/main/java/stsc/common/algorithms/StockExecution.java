@@ -8,7 +8,7 @@ import org.apache.commons.lang3.Validate;
 import stsc.common.storage.SignalsStorage;
 
 /**
- * Stock execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmSettings}.
+ * Stock execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmConfiguration}.
  */
 public class StockExecution implements Cloneable, Execution<StockAlgorithm> {
 
@@ -16,7 +16,7 @@ public class StockExecution implements Cloneable, Execution<StockAlgorithm> {
 	private final String algorithmName;
 	private final Class<? extends StockAlgorithm> algorithmType;
 
-	private final MutatingAlgorithmSettings algorithmSettings;
+	private final MutatingAlgorithmConfiguration algorithmSettings;
 
 	static Class<? extends StockAlgorithm> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
@@ -27,11 +27,11 @@ public class StockExecution implements Cloneable, Execution<StockAlgorithm> {
 		}
 	}
 
-	public StockExecution(final String executionName, final String algorithmName, MutatingAlgorithmSettings settings) throws BadAlgorithmException {
+	public StockExecution(final String executionName, final String algorithmName, MutatingAlgorithmConfiguration settings) throws BadAlgorithmException {
 		this(executionName, generateAlgorithm(algorithmName), settings);
 	}
 
-	public StockExecution(String executionName, Class<? extends StockAlgorithm> algorithmType, MutatingAlgorithmSettings algorithmSettings) {
+	public StockExecution(String executionName, Class<? extends StockAlgorithm> algorithmType, MutatingAlgorithmConfiguration algorithmSettings) {
 		Validate.notNull(executionName);
 		Validate.notNull(algorithmType);
 		Validate.notNull(algorithmSettings);
@@ -52,7 +52,7 @@ public class StockExecution implements Cloneable, Execution<StockAlgorithm> {
 	}
 
 	@Override
-	public MutatingAlgorithmSettings getSettings() {
+	public MutatingAlgorithmConfiguration getSettings() {
 		return algorithmSettings;
 	}
 

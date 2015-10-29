@@ -7,7 +7,7 @@ import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
 /**
- * <<<<<<< HEAD End of day execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmSettings}.
+ * <<<<<<< HEAD End of day execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmConfiguration}.
  */
 public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 
@@ -15,7 +15,7 @@ public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 	private final String algorithmName;
 	private final Class<? extends EodAlgorithm> algorithmType;
 
-	private final MutatingAlgorithmSettings algorithmSettings;
+	private final MutatingAlgorithmConfiguration algorithmSettings;
 
 	public static Class<? extends EodAlgorithm> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
@@ -26,11 +26,11 @@ public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 		}
 	}
 
-	public EodExecution(String executionName, String algorithmName, MutatingAlgorithmSettings algorithmSettings) throws BadAlgorithmException {
+	public EodExecution(String executionName, String algorithmName, MutatingAlgorithmConfiguration algorithmSettings) throws BadAlgorithmException {
 		this(executionName, generateAlgorithm(algorithmName), algorithmSettings);
 	}
 
-	public EodExecution(String executionName, Class<? extends EodAlgorithm> algorithmType, MutatingAlgorithmSettings algorithmSettings) {
+	public EodExecution(String executionName, Class<? extends EodAlgorithm> algorithmType, MutatingAlgorithmConfiguration algorithmSettings) {
 		this.executionName = executionName;
 		this.algorithmName = algorithmType.getName();
 		this.algorithmType = algorithmType;
@@ -83,7 +83,7 @@ public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 	}
 
 	@Override
-	public MutatingAlgorithmSettings getSettings() {
+	public MutatingAlgorithmConfiguration getSettings() {
 		return algorithmSettings;
 	}
 

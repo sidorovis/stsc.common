@@ -11,25 +11,25 @@ public final class StockAlgorithmInit {
 
 	private final String executionName;
 	final SignalsStorage signalsStorage;
-	final AlgorithmSettings settings;
+	final AlgorithmConfiguration settings;
 
 	private final String stockName;
 
-	public StockAlgorithmInit(String executionName, StockAlgorithmInit init, AlgorithmSettings settings) {
+	public StockAlgorithmInit(String executionName, StockAlgorithmInit init, AlgorithmConfiguration settings) {
 		this.executionName = executionName;
 		this.signalsStorage = init.signalsStorage;
 		this.settings = settings;
 		this.stockName = init.stockName;
 	}
 
-	public StockAlgorithmInit(String executionName, SignalsStorage signalsStorage, String stockName, AlgorithmSettings settings) {
+	public StockAlgorithmInit(String executionName, SignalsStorage signalsStorage, String stockName, AlgorithmConfiguration settings) {
 		this.executionName = executionName;
 		this.signalsStorage = signalsStorage;
 		this.stockName = stockName;
 		this.settings = settings;
 	}
 
-	public StockAlgorithmInit(String executionName, StockAlgorithmInit stockAlgorithmInit, String stockName, AlgorithmSettings settings) {
+	public StockAlgorithmInit(String executionName, StockAlgorithmInit stockAlgorithmInit, String stockName, AlgorithmConfiguration settings) {
 		this.executionName = executionName;
 		this.signalsStorage = stockAlgorithmInit.signalsStorage;
 		this.stockName = stockName;
@@ -40,11 +40,11 @@ public final class StockAlgorithmInit {
 	 * createInit(...) is a method that generate Init object for StockAlgorithm
 	 * initialization
 	 */
-	public StockAlgorithmInit createInit(String executionName, AlgorithmSettings settings) {
+	public StockAlgorithmInit createInit(String executionName, AlgorithmConfiguration settings) {
 		return new StockAlgorithmInit(executionName, this, settings);
 	}
 
-	public StockAlgorithmInit createInit(String executionName, String stockName, AlgorithmSettings settings) {
+	public StockAlgorithmInit createInit(String executionName, String stockName, AlgorithmConfiguration settings) {
 		return new StockAlgorithmInit(executionName, this, stockName, settings);
 	}
 
@@ -101,7 +101,7 @@ public final class StockAlgorithmInit {
 		return stockName + ": " + executionName;
 	}
 
-	public AlgorithmSettings getSettings() {
+	public AlgorithmConfiguration getSettings() {
 		return settings;
 	}
 
