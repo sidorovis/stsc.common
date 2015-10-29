@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import stsc.common.stocks.Stock;
-import stsc.common.stocks.UnitedFormatStock;
+import stsc.common.stocks.united.format.UnitedFormatStock;
 
 public class StockTest {
 

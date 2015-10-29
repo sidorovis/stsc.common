@@ -3,6 +3,8 @@ package stsc.common.stocks;
 import org.junit.Assert;
 import org.junit.Test;
 
+import stsc.common.stocks.united.format.UnitedFormatHelper;
+
 public class UnitedFormatHelperTest {
 
 	@Test

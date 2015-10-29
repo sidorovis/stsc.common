@@ -14,4 +14,5 @@ public interface StockStorage {
 	public abstract Optional<Stock> getStock(final String name);
 
 	public abstract Set<String> getStockNames();
+
 }

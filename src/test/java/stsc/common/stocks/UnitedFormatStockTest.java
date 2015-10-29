@@ -12,6 +12,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import stsc.common.Settings;
+import stsc.common.stocks.united.format.UnitedFormatHelper;
+import stsc.common.stocks.united.format.UnitedFormatStock;
 
 public class UnitedFormatStockTest {
 
