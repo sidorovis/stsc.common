@@ -1,9 +1,27 @@
 package stsc.common.algorithms;
 
+import java.util.Map;
+
 /**
  * {@link AlgorithmSettings} with possibility to Mutate them (genetic search algorithm).
  */
 public interface MutatingAlgorithmSettings extends AlgorithmSettings {
+
+	// Not safe getters
+
+	public Integer getInteger(String key);
+
+	public Double getDouble(String key);
+
+	public String getString(String key);
+
+	// Getters for sub-collections
+
+	public Map<String, Integer> getIntegers();
+
+	public Map<String, Double> getDoubles();
+
+	public Map<String, String> getStrings();
 
 	// Mutate methods
 

@@ -1,7 +1,6 @@
 package stsc.common.algorithms;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface for collection of {@link AlgorithmSetting}. <br/>
@@ -15,31 +14,15 @@ import java.util.Map;
  */
 public interface AlgorithmSettings extends Cloneable {
 
-	// Getters for vectors
-
-	public Map<String, Integer> getIntegers();
-
-	public Map<String, Double> getDoubles();
-
-	public Map<String, String> getStrings();
-
-	// Getters
-
-	public Integer getInteger(String key);
-
-	public Double getDouble(String key);
-
-	public String getString(String key);
-
-	public List<String> getSubExecutions();
-
-	// Old Getters
+	// Safe Getters
 
 	public AlgorithmSetting<Integer> getIntegerSetting(String key, Integer defaultValue);
 
 	public AlgorithmSetting<Double> getDoubleSetting(String key, Double defaultValue);
 
 	public AlgorithmSetting<String> getStringSetting(String key, String defaultValue);
+
+	public List<String> getSubExecutions();
 
 	// hash code and clone
 
