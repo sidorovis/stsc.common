@@ -28,6 +28,6 @@ public interface AlgorithmConfiguration extends Cloneable {
 
 	public AlgorithmConfiguration clone();
 
-	public MutatingAlgorithmConfiguration createAlgorithmConfiguration();
+	public MutableAlgorithmConfiguration createAlgorithmConfiguration();
 
 }

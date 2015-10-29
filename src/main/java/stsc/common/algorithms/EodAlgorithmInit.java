@@ -77,7 +77,7 @@ public final class EodAlgorithmInit {
 		return broker;
 	}
 
-	public MutatingAlgorithmConfiguration createSubAlgorithmConfiguration() {
+	public MutableAlgorithmConfiguration createSubAlgorithmConfiguration() {
 		return configuration.createAlgorithmConfiguration();
 	}
 

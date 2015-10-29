@@ -15,7 +15,7 @@ public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 	private final String algorithmName;
 	private final Class<? extends EodAlgorithm> algorithmType;
 
-	private final MutatingAlgorithmConfiguration algorithmSettings;
+	private final MutableAlgorithmConfiguration algorithmSettings;
 
 	public static Class<? extends EodAlgorithm> generateAlgorithm(final String algorithmName) throws BadAlgorithmException {
 		try {
@@ -26,11 +26,11 @@ public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 		}
 	}
 
-	public EodExecution(String executionName, String algorithmName, MutatingAlgorithmConfiguration algorithmSettings) throws BadAlgorithmException {
+	public EodExecution(String executionName, String algorithmName, MutableAlgorithmConfiguration algorithmSettings) throws BadAlgorithmException {
 		this(executionName, generateAlgorithm(algorithmName), algorithmSettings);
 	}
 
-	public EodExecution(String executionName, Class<? extends EodAlgorithm> algorithmType, MutatingAlgorithmConfiguration algorithmSettings) {
+	public EodExecution(String executionName, Class<? extends EodAlgorithm> algorithmType, MutableAlgorithmConfiguration algorithmSettings) {
 		this.executionName = executionName;
 		this.algorithmName = algorithmType.getName();
 		this.algorithmType = algorithmType;
@@ -83,7 +83,7 @@ public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 	}
 
 	@Override
-	public MutatingAlgorithmConfiguration getSettings() {
+	public MutableAlgorithmConfiguration getSettings() {
 		return algorithmSettings;
 	}
 

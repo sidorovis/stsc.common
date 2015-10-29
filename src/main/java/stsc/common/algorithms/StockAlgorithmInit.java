@@ -104,7 +104,7 @@ public final class StockAlgorithmInit {
 		return algorithmConfiguration;
 	}
 
-	public MutatingAlgorithmConfiguration createSubAlgorithmConfiguration() {
+	public MutableAlgorithmConfiguration createSubAlgorithmConfiguration() {
 		return algorithmConfiguration.createAlgorithmConfiguration();
 	}
 
