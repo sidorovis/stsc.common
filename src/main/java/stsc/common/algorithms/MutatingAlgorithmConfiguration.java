@@ -7,13 +7,11 @@ import java.util.Map;
  */
 public interface MutatingAlgorithmConfiguration extends AlgorithmConfiguration {
 
-	// Not safe getters
+	// clone / create methods
 
-	public Integer getInteger(String key);
+	public MutatingAlgorithmConfiguration clone();
 
-	public Double getDouble(String key);
-
-	public String getString(String key);
+	public MutatingAlgorithmConfiguration createAlgorithmConfiguration();
 
 	// Getters for sub-collections
 
@@ -25,13 +23,14 @@ public interface MutatingAlgorithmConfiguration extends AlgorithmConfiguration {
 
 	// Mutate methods
 
-	public void mutate(String name, Integer mutatedValue);
+	public MutatingAlgorithmConfiguration setString(final String key, final String value);
 
-	public void mutate(String name, Double mutatedValue);
+	public MutatingAlgorithmConfiguration setInteger(final String key, final Integer value);
 
-	public void mutate(String name, String mutatedValue);
+	public MutatingAlgorithmConfiguration setDouble(final String key, final Double value);
 
-	public void mutateSubExecution(int index, String value);
+	public MutatingAlgorithmConfiguration addSubExecutionName(final String subExecutionName);
 
-	public MutatingAlgorithmConfiguration clone();
+	public MutatingAlgorithmConfiguration setSubExecutionName(final int index, final String subExecutionName);
+
 }

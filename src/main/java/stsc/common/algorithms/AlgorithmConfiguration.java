@@ -14,11 +14,11 @@ public interface AlgorithmConfiguration extends Cloneable {
 
 	// Safe Getters
 
-	public AlgorithmSetting<Integer> getIntegerSetting(String key, Integer defaultValue);
+	public Integer getIntegerSetting(String key, Integer defaultValue);
 
-	public AlgorithmSetting<Double> getDoubleSetting(String key, Double defaultValue);
+	public Double getDoubleSetting(String key, Double defaultValue);
 
-	public AlgorithmSetting<String> getStringSetting(String key, String defaultValue);
+	public String getStringSetting(String key, String defaultValue);
 
 	public List<String> getSubExecutions();
 
@@ -27,5 +27,7 @@ public interface AlgorithmConfiguration extends Cloneable {
 	public void stringHashCode(StringBuilder sb);
 
 	public AlgorithmConfiguration clone();
+
+	public MutatingAlgorithmConfiguration createAlgorithmConfiguration();
 
 }

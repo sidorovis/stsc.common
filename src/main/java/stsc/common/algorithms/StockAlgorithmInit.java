@@ -11,45 +11,44 @@ public final class StockAlgorithmInit {
 
 	private final String executionName;
 	final SignalsStorage signalsStorage;
-	final AlgorithmConfiguration settings;
+	final AlgorithmConfiguration algorithmConfiguration;
 
 	private final String stockName;
 
-	public StockAlgorithmInit(String executionName, StockAlgorithmInit init, AlgorithmConfiguration settings) {
+	public StockAlgorithmInit(String executionName, StockAlgorithmInit init, AlgorithmConfiguration algorithmConfiguration) {
 		this.executionName = executionName;
 		this.signalsStorage = init.signalsStorage;
-		this.settings = settings;
+		this.algorithmConfiguration = algorithmConfiguration;
 		this.stockName = init.stockName;
 	}
 
-	public StockAlgorithmInit(String executionName, SignalsStorage signalsStorage, String stockName, AlgorithmConfiguration settings) {
+	public StockAlgorithmInit(String executionName, SignalsStorage signalsStorage, String stockName, AlgorithmConfiguration algorithmConfiguration) {
 		this.executionName = executionName;
 		this.signalsStorage = signalsStorage;
 		this.stockName = stockName;
-		this.settings = settings;
+		this.algorithmConfiguration = algorithmConfiguration;
 	}
 
-	public StockAlgorithmInit(String executionName, StockAlgorithmInit stockAlgorithmInit, String stockName, AlgorithmConfiguration settings) {
+	public StockAlgorithmInit(String executionName, StockAlgorithmInit stockAlgorithmInit, String stockName, AlgorithmConfiguration algorithmConfiguration) {
 		this.executionName = executionName;
 		this.signalsStorage = stockAlgorithmInit.signalsStorage;
 		this.stockName = stockName;
-		this.settings = settings;
+		this.algorithmConfiguration = algorithmConfiguration;
 	}
 
 	/**
-	 * createInit(...) is a method that generate Init object for StockAlgorithm
-	 * initialization
+	 * createInit(...) is a method that generate Init object for StockAlgorithm initialization
 	 */
-	public StockAlgorithmInit createInit(String executionName, AlgorithmConfiguration settings) {
-		return new StockAlgorithmInit(executionName, this, settings);
+	public StockAlgorithmInit createInit(String executionName, AlgorithmConfiguration algorithmConfiguration) {
+		return new StockAlgorithmInit(executionName, this, algorithmConfiguration);
 	}
 
-	public StockAlgorithmInit createInit(String executionName, String stockName, AlgorithmConfiguration settings) {
-		return new StockAlgorithmInit(executionName, this, stockName, settings);
+	public StockAlgorithmInit createInit(String executionName, String stockName, AlgorithmConfiguration algorithmConfiguration) {
+		return new StockAlgorithmInit(executionName, this, stockName, algorithmConfiguration);
 	}
 
 	public StockAlgorithmInit createInit(String executionName) {
-		return new StockAlgorithmInit(executionName, this, settings);
+		return new StockAlgorithmInit(executionName, this, algorithmConfiguration);
 	}
 
 	public String getStockName() {
@@ -102,7 +101,11 @@ public final class StockAlgorithmInit {
 	}
 
 	public AlgorithmConfiguration getSettings() {
-		return settings;
+		return algorithmConfiguration;
+	}
+
+	public MutatingAlgorithmConfiguration createSubAlgorithmConfiguration() {
+		return algorithmConfiguration.createAlgorithmConfiguration();
 	}
 
 }

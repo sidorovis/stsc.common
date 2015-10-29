@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.Optional;
 
 import stsc.common.BadSignalException;
+import stsc.common.signals.SerieSignal;
 import stsc.common.signals.SignalContainer;
 import stsc.common.signals.SignalsSerie;
-import stsc.common.signals.SerieSignal;
 import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
@@ -75,6 +75,10 @@ public final class EodAlgorithmInit {
 
 	public Broker getBroker() {
 		return broker;
+	}
+
+	public MutatingAlgorithmConfiguration createSubAlgorithmConfiguration() {
+		return configuration.createAlgorithmConfiguration();
 	}
 
 }
