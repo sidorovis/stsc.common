@@ -3,8 +3,6 @@ package stsc.common.algorithms;
 import java.util.List;
 import java.util.Map;
 
-import stsc.common.FromToPeriod;
-
 /**
  * Interface for collection of {@link AlgorithmSetting}. <br/>
  * Provide dozen of possibilities and probably should be refactored because of that. <br/>
@@ -12,6 +10,8 @@ import stsc.common.FromToPeriod;
  * 2) methods to get internal configuration with 'empty' values (by defining default value); <br/>
  * 3) mutate methods (for genetic algorithms (probably that one should be moved out); <br/>
  * 4) clone method (for different ways of best settings search).
+ * 
+ * TODO rename me to AlgorithmConfiguration
  */
 public interface AlgorithmSettings extends Cloneable {
 
@@ -40,8 +40,6 @@ public interface AlgorithmSettings extends Cloneable {
 	public AlgorithmSetting<Double> getDoubleSetting(String key, Double defaultValue);
 
 	public AlgorithmSetting<String> getStringSetting(String key, String defaultValue);
-
-	public FromToPeriod getPeriod();
 
 	// hash code and clone
 
