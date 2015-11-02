@@ -73,7 +73,7 @@ public final class EodAlgorithmInit {
 		return configuration;
 	}
 
-	public Broker getBroker() {
+	Broker getBroker() {
 		return broker;
 	}
 
