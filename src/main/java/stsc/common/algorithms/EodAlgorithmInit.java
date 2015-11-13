@@ -29,9 +29,16 @@ public final class EodAlgorithmInit {
 	}
 
 	/**
-	 * createInit(...) is a method that generate Init object for StockAlgorithm initialization
+	 * createEodInit(...) is a method that generate Init object for EodAlgorithm initialization
 	 */
-	public StockAlgorithmInit createInit(String executionName, AlgorithmConfiguration settings, String stockName) {
+	public EodAlgorithmInit createEodInit(String executionName, AlgorithmConfiguration settings) {
+		return new EodAlgorithmInit(executionName, signalsStorage, settings, broker);
+	}
+
+	/**
+	 * createStockInit(...) is a method that generate Init object for StockAlgorithm initialization
+	 */
+	public StockAlgorithmInit createStockInit(String executionName, AlgorithmConfiguration settings, String stockName) {
 		return new StockAlgorithmInit(executionName, signalsStorage, stockName, settings);
 	}
 
