@@ -7,7 +7,11 @@ import java.util.logging.Level;
 
 public class ApplicationHelper {
 
-	public static void createHelper(final StopableApp app) throws Exception {
+	public interface InterruptProcessor {
+		boolean stopOnException(Exception e);
+	}
+	
+	public static void createHelper(final StopableApp app, final InterruptProcessor interruptProcessor) throws Exception {
 		final AtomicBoolean finished = new AtomicBoolean(false);
 		final Thread waiter = new Thread(new Runnable() {
 			@Override
@@ -16,7 +20,10 @@ public class ApplicationHelper {
 				while (!checkReadExitLine(app, bufferedReader)) {
 					try {
 						Thread.sleep(230);
-					} catch (Exception e) {
+					} catch (InterruptedException e) {
+						if (interruptProcessor.stopOnException(e)) {
+							break;
+						}
 					}
 					if (finished.get()) {
 						break;
