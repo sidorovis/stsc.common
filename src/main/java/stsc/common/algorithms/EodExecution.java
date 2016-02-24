@@ -7,7 +7,7 @@ import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
 /**
- * <<<<<<< HEAD End of day execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmConfiguration}.
+ * End of day execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmConfiguration}.
  */
 public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 
