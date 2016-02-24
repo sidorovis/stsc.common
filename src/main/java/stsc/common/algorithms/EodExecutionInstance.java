@@ -7,9 +7,9 @@ import stsc.common.storage.SignalsStorage;
 import stsc.common.trading.Broker;
 
 /**
- * End of day execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmConfiguration}.
+ * EOD end of day execution instance characterize description of future instance of algorithm with defined {@link AlgorithmConfiguration}.
  */
-public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
+public class EodExecutionInstance implements Cloneable, ExecutionInstance<EodAlgorithm> {
 
 	private final String executionName;
 	private final String algorithmName;
@@ -26,11 +26,11 @@ public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 		}
 	}
 
-	public EodExecution(String executionName, String algorithmName, MutableAlgorithmConfiguration algorithmSettings) throws BadAlgorithmException {
+	public EodExecutionInstance(String executionName, String algorithmName, MutableAlgorithmConfiguration algorithmSettings) throws BadAlgorithmException {
 		this(executionName, generateAlgorithm(algorithmName), algorithmSettings);
 	}
 
-	public EodExecution(String executionName, Class<? extends EodAlgorithm> algorithmType, MutableAlgorithmConfiguration algorithmSettings) {
+	public EodExecutionInstance(String executionName, Class<? extends EodAlgorithm> algorithmType, MutableAlgorithmConfiguration algorithmSettings) {
 		this.executionName = executionName;
 		this.algorithmName = algorithmType.getName();
 		this.algorithmType = algorithmType;
@@ -88,8 +88,8 @@ public class EodExecution implements Cloneable, Execution<EodAlgorithm> {
 	}
 
 	@Override
-	public EodExecution clone() {
-		return new EodExecution(executionName, algorithmType, algorithmSettings.clone());
+	public EodExecutionInstance clone() {
+		return new EodExecutionInstance(executionName, algorithmType, algorithmSettings.clone());
 	}
 
 	@Override

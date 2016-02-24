@@ -2,9 +2,9 @@ package stsc.common.algorithms;
 
 /**
  * Execution is an instance of algorithm. When algorithm gets name / concrete configuration parameters and instantiate - we get Execution. (
- * {@link StockExecution}, {@link EodExecution} should inherit that interface).
+ * {@link StockExecutionInstance}, {@link EodExecutionInstance} should inherit that interface).
  */
-public interface Execution<AlgorithmClassType> {
+public interface ExecutionInstance<AlgorithmClassType> {
 
 	public String getExecutionName();
 

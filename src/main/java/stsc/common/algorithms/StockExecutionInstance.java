@@ -8,9 +8,9 @@ import org.apache.commons.lang3.Validate;
 import stsc.common.storage.SignalsStorage;
 
 /**
- * Stock execution. Execution characterize description of future instance of algorithm with defined {@link AlgorithmConfiguration}.
+ * Stock execution instance characterize description of future instance of algorithm with defined {@link AlgorithmConfiguration}.
  */
-public class StockExecution implements Cloneable, Execution<StockAlgorithm> {
+public class StockExecutionInstance implements Cloneable, ExecutionInstance<StockAlgorithm> {
 
 	private final String executionName;
 	private final String algorithmName;
@@ -27,11 +27,11 @@ public class StockExecution implements Cloneable, Execution<StockAlgorithm> {
 		}
 	}
 
-	public StockExecution(final String executionName, final String algorithmName, MutableAlgorithmConfiguration settings) throws BadAlgorithmException {
+	public StockExecutionInstance(final String executionName, final String algorithmName, MutableAlgorithmConfiguration settings) throws BadAlgorithmException {
 		this(executionName, generateAlgorithm(algorithmName), settings);
 	}
 
-	public StockExecution(String executionName, Class<? extends StockAlgorithm> algorithmType, MutableAlgorithmConfiguration algorithmSettings) {
+	public StockExecutionInstance(String executionName, Class<? extends StockAlgorithm> algorithmType, MutableAlgorithmConfiguration algorithmSettings) {
 		Validate.notNull(executionName);
 		Validate.notNull(algorithmType);
 		Validate.notNull(algorithmSettings);
@@ -94,8 +94,8 @@ public class StockExecution implements Cloneable, Execution<StockAlgorithm> {
 	}
 
 	@Override
-	public StockExecution clone() {
-		return new StockExecution(executionName, algorithmType, algorithmSettings.clone());
+	public StockExecutionInstance clone() {
+		return new StockExecutionInstance(executionName, algorithmType, algorithmSettings.clone());
 	}
 
 	@Override
